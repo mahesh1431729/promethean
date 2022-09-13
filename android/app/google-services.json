@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "42440854830",
+    "project_id": "promethean-bvrit",
+    "storage_bucket": "promethean-bvrit.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:42440854830:android:7f0ef56477e48a8469bebf",
+        "android_client_info": {
+          "package_name": "com.bvrit.promethean"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "42440854830-bco1r49u2apom2d22fhqlht90pg0i2l8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bvrit.promethean",
+            "certificate_hash": "34823650522d85d79558d6f2c1f1131a73d7dc59"
+          }
+        },
+        {
+          "client_id": "42440854830-p6a0p4qnvd2h7dpnf2hplp8s33u5krd4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQ2LAvjiaClKSvDauyIumtqnyTk8fbipU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "42440854830-p6a0p4qnvd2h7dpnf2hplp8s33u5krd4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
