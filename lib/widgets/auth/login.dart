@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:promethean/screens/auth/forgotpassword.dart';
 import 'package:promethean/screens/auth/signup.dart';
+import 'package:promethean/screens/user/homescreen.dart';
 
 import '../../utils/unitls.dart';
 
@@ -181,7 +182,12 @@ class _LoginModuleState extends State<LoginModule> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: MaterialButton(
-                    onPressed: (() {}),
+                    onPressed: (() {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                          (route) => false);
+                    }),
                     child: Center(
                       child: Text(
                         "Login",
