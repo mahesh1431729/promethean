@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:promethean/screens/user/eventregistration.dart';
 import 'package:promethean/screens/user/homescreen.dart';
 
 import 'login.dart';
@@ -12,14 +13,14 @@ import '../../utils/unitls.dart';
 class ConfirmPasswordModule extends StatefulWidget {
   ConfirmPasswordModule({
     super.key,
-    required this.collegeName,
+    required this.branch,
     required this.contact,
     required this.email,
     required this.userName,
   });
   String userName;
   String email;
-  String collegeName;
+  String branch;
   String contact;
   @override
   State<ConfirmPasswordModule> createState() => _ConfirmPasswordModuleState();
@@ -231,8 +232,9 @@ class _ConfirmPasswordModuleState extends State<ConfirmPasswordModule> {
                                         "https://firebasestorage.googleapis.com/v0/b/promethean-bvrit.appspot.com/o/userImages%2F2022-09-17%2011%3A29%3A19.483030?alt=media&token=1407e358-8e33-4f7c-b95d-3520d7070b44",
                                     "name": widget.userName,
                                     "email": widget.email,
-                                    "collegeName": widget.collegeName,
+                                    "branch": widget.branch,
                                     "contact": widget.contact,
+                                    'organizer ': true,
                                   }))
                               .then((value) {
                             FirebaseFirestore.instance
@@ -243,7 +245,7 @@ class _ConfirmPasswordModuleState extends State<ConfirmPasswordModule> {
                             Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => HomeScreen()),
+                                    builder: (context) => EventRegistration()),
                                 (route) => false);
                           });
                         }
@@ -263,40 +265,40 @@ class _ConfirmPasswordModuleState extends State<ConfirmPasswordModule> {
                     ),
                   ),
                 ),
-                Expanded(
-                    child: Align(
-                  alignment: FractionalOffset.bottomCenter,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Already have an account?",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 15,
-                          letterSpacing: 0.15,
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: (() {
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginScreen()),
-                              (route) => false);
-                        }),
-                        child: Text(
-                          "Login Now",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 15,
-                            letterSpacing: 0.15,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ))
+                // Expanded(
+                //     child: Align(
+                //   alignment: FractionalOffset.bottomCenter,
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     children: [
+                //       Text(
+                //         "Already have an account?",
+                //         textAlign: TextAlign.center,
+                //         style: TextStyle(
+                //           fontSize: 15,
+                //           letterSpacing: 0.15,
+                //         ),
+                //       ),
+                //       TextButton(
+                //         onPressed: (() {
+                //           Navigator.pushAndRemoveUntil(
+                //               context,
+                //               MaterialPageRoute(
+                //                   builder: (context) => LoginScreen()),
+                //               (route) => false);
+                //         }),
+                //         child: Text(
+                //           "Login Now",
+                //           textAlign: TextAlign.center,
+                //           style: TextStyle(
+                //             fontSize: 15,
+                //             letterSpacing: 0.15,
+                //           ),
+                //         ),
+                //       )
+                //     ],
+                //   ),
+                // ))
               ],
             ),
           ),

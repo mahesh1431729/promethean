@@ -29,7 +29,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Promethean-BVRIT(2K22)',
-      home: EventRegistration(),
+      home: SplashScreen(),
     );
   }
 }

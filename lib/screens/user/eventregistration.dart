@@ -827,6 +827,10 @@ class _EventRegistrationState extends State<EventRegistration> {
                           }).then(
                             (value) async {
                               FirebaseFirestore.instance
+                                  .collection("users")
+                                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                                  .update({'id': value.id});
+                              FirebaseFirestore.instance
                                   .collection("carazol")
                                   .add({'id': value.id, 'image': image});
                               await FirebaseFirestore.instance
@@ -854,7 +858,8 @@ class _EventRegistrationState extends State<EventRegistration> {
                                     alignment: Alignment.center,
                                     children: [
                                       Material(
-                                        child: Text("Event Added"),
+                                        child: Text(
+                                            "Event Added\n please uninstall"),
                                       )
                                     ],
                                   );

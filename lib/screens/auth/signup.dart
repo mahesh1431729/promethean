@@ -13,6 +13,20 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  List list = [
+    'CSE',
+    'AIML & CSD',
+    'IT & CSBS',
+    'ECE',
+    'EEE',
+    'MECH',
+    'CIVIL',
+    'CHE',
+    'PHE',
+    'BME',
+    'MBA'
+  ];
+  String dropdownValue = 'CSE';
   TextEditingController email = TextEditingController();
   TextEditingController userName = TextEditingController();
   TextEditingController contact = TextEditingController();
@@ -198,7 +212,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                   Container(
                                     width: width * 0.75,
-                                    height: 56,
+                                    height: 41,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8),
                                       border: Border.all(
@@ -207,38 +221,50 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       ),
                                       color: Color(0xfff7f8f9),
                                     ),
-                                    child: TextFormField(
-                                      validator: ((value) {
-                                        MultiValidator([
-                                          RequiredValidator(
-                                              errorText:
-                                                  "This field is required"),
-                                        ]);
-                                      }),
-                                      controller: collegeName,
-                                      style: TextStyle(
-                                        color: AppColors.backGoundColor,
-                                        fontSize: width * 0.04,
-                                        fontFamily: "Urbanist",
-                                        fontWeight: FontWeight.w700,
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 10.0),
+                                      child: DropdownButton(
+                                        selectedItemBuilder: (context) {
+                                          print(dropdownValue);
+                                          return [
+                                            Center(
+                                              child: Text(
+                                                dropdownValue,
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                              ),
+                                            )
+                                          ];
+                                        },
+                                        value: dropdownValue,
+                                        underline: Container(),
+                                        icon: Expanded(
+                                            child: Icon(Icons.arrow_downward)),
+                                        elevation: 16,
+                                        style: const TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 255, 255, 255)),
+                                        onChanged: (value) {
+                                          setState(() {
+                                            dropdownValue = value!;
+                                          });
+                                        },
+                                        items:
+                                            list.map<DropdownMenuItem>((value) {
+                                          return DropdownMenuItem(
+                                            onTap: () {
+                                              setState(() {
+                                                dropdownValue = value!;
+                                              });
+                                            },
+                                            value: value,
+                                            child: Text(value,
+                                                style: TextStyle(
+                                                    color: Colors.black)),
+                                          );
+                                        }).toList(),
                                       ),
-                                      decoration: InputDecoration(
-                                          labelText: "College name",
-                                          labelStyle: TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: width * 0.035,
-                                            fontFamily: "Urbanist",
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                          hintText: "Enter your college name",
-                                          hintStyle: TextStyle(
-                                            color: Color(0xff8390a1),
-                                            fontSize: width * 0.035,
-                                            fontFamily: "Urbanist",
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                          border: OutlineInputBorder(
-                                              borderSide: BorderSide.none)),
                                     ),
                                   ),
                                   SizedBox(
@@ -327,42 +353,42 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       ),
                                     ),
                                   ),
-                                  Expanded(
-                                      child: Align(
-                                    alignment: FractionalOffset.bottomCenter,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Already have an account?",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            letterSpacing: 0.15,
-                                          ),
-                                        ),
-                                        TextButton(
-                                          onPressed: (() {
-                                            Navigator.pushAndRemoveUntil(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        LoginScreen()),
-                                                (route) => false);
-                                          }),
-                                          child: Text(
-                                            "Login Now",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              letterSpacing: 0.15,
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ))
+                                  // Expanded(
+                                  //     child: Align(
+                                  //   alignment: FractionalOffset.bottomCenter,
+                                  //   child: Row(
+                                  //     mainAxisAlignment:
+                                  //         MainAxisAlignment.center,
+                                  //     children: [
+                                  //       Text(
+                                  //         "Already have an account?",
+                                  //         textAlign: TextAlign.center,
+                                  //         style: TextStyle(
+                                  //           fontSize: 15,
+                                  //           letterSpacing: 0.15,
+                                  //         ),
+                                  //       ),
+                                  //       TextButton(
+                                  //         onPressed: (() {
+                                  //           Navigator.pushAndRemoveUntil(
+                                  //               context,
+                                  //               MaterialPageRoute(
+                                  //                   builder: (context) =>
+                                  //                       LoginScreen()),
+                                  //               (route) => false);
+                                  //         }),
+                                  //         child: Text(
+                                  //           "Login Now",
+                                  //           textAlign: TextAlign.center,
+                                  //           style: TextStyle(
+                                  //             fontSize: 15,
+                                  //             letterSpacing: 0.15,
+                                  //           ),
+                                  //         ),
+                                  //       )
+                                  //     ],
+                                  //   ),
+                                  // ))
                                 ],
                               ),
                             ),
@@ -370,7 +396,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       )
                     : ConfirmPasswordModule(
-                        collegeName: collegeName.text,
+                        branch: dropdownValue,
                         contact: contact.text,
                         userName: userName.text,
                         email: email.text,
