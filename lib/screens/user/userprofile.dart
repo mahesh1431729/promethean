@@ -370,6 +370,7 @@ class _ProfileState extends State<Profile> {
                             borderRadius: BorderRadius.circular(8),
                             child: MaterialButton(
                               onPressed: (() {
+                                Firebase
                                 Navigator.pushAndRemoveUntil(
                                     context,
                                     MaterialPageRoute(

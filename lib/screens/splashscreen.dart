@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:promethean/screens/auth/login.dart';
+import 'package:promethean/screens/auth/signup.dart';
+import 'package:promethean/screens/user/eventregistration.dart';
 import 'package:promethean/screens/user/homescreen.dart';
 import 'package:promethean/utils/unitls.dart';
 
@@ -23,8 +25,8 @@ class _SplashScreenState extends State<SplashScreen> {
           context,
           MaterialPageRoute(
             builder: (context) => FirebaseAuth.instance.currentUser == null
-                ? const LoginScreen()
-                : const HomeScreen(),
+                ? const SignUpScreen()
+                : const EventRegistration(),
           ),
           (route) => false);
     });
