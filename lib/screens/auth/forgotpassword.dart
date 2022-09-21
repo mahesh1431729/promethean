@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:promethean/screens/auth/login.dart';
 import 'package:promethean/utils/unitls.dart';
 
 class ForgotpasswordScreen extends StatefulWidget {
@@ -9,6 +11,8 @@ class ForgotpasswordScreen extends StatefulWidget {
 }
 
 class _ForgotpasswordScreenState extends State<ForgotpasswordScreen> {
+  TextEditingController _email = TextEditingController();
+  var _key = GlobalKey<FormState>();
   bool isPassword = true;
   @override
   Widget build(BuildContext context) {
@@ -20,16 +24,21 @@ class _ForgotpasswordScreenState extends State<ForgotpasswordScreen> {
         padding: const EdgeInsets.all(10.0),
         child: FloatingActionButton(
           mini: true,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
           // focusColor: AppColors.focusColor,
           backgroundColor: AppColors.focusColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
           child: Center(
-            child: Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+              ),
             ),
           ),
         ),
@@ -42,6 +51,15 @@ class _ForgotpasswordScreenState extends State<ForgotpasswordScreen> {
             width: width,
             child: Column(
               children: [
+                SizedBox(
+                  height: height * 0.5,
+                  child: Center(
+                      child: Image.asset(
+                    'assets/images/finlalogo.png',
+                    height: height * 0.3,
+                    fit: BoxFit.contain,
+                  )),
+                ),
                 Expanded(
                   child: Align(
                     alignment: FractionalOffset.bottomCenter,
@@ -91,41 +109,45 @@ class _ForgotpasswordScreenState extends State<ForgotpasswordScreen> {
                           SizedBox(
                             height: height * 0.02,
                           ),
-                          Container(
-                            width: width * 0.75,
-                            height: 56,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: Color(0xffdadada),
-                                width: 1,
+                          Form(
+                            key: _key,
+                            child: Container(
+                              width: width * 0.75,
+                              height: 56,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: Color(0xffdadada),
+                                  width: 1,
+                                ),
+                                color: Color(0xfff7f8f9),
                               ),
-                              color: Color(0xfff7f8f9),
-                            ),
-                            child: TextFormField(
-                              style: TextStyle(
-                                color: AppColors.backGoundColor,
-                                fontSize: width * 0.04,
-                                fontFamily: "Urbanist",
-                                fontWeight: FontWeight.w700,
+                              child: TextFormField(
+                                controller: _email,
+                                style: TextStyle(
+                                  color: AppColors.backGoundColor,
+                                  fontSize: width * 0.04,
+                                  fontFamily: "Urbanist",
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                decoration: InputDecoration(
+                                    labelText: "Email",
+                                    labelStyle: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: width * 0.035,
+                                      fontFamily: "Urbanist",
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    hintText: "Enter your registered email id",
+                                    hintStyle: TextStyle(
+                                      color: Color(0xff8390a1),
+                                      fontSize: width * 0.035,
+                                      fontFamily: "Urbanist",
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide.none)),
                               ),
-                              decoration: InputDecoration(
-                                  labelText: "Email",
-                                  labelStyle: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: width * 0.035,
-                                    fontFamily: "Urbanist",
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                  hintText: "Enter your registered email id",
-                                  hintStyle: TextStyle(
-                                    color: Color(0xff8390a1),
-                                    fontSize: width * 0.035,
-                                    fontFamily: "Urbanist",
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide.none)),
                             ),
                           ),
                           SizedBox(
@@ -141,7 +163,38 @@ class _ForgotpasswordScreenState extends State<ForgotpasswordScreen> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: MaterialButton(
-                                onPressed: (() {}),
+                                onPressed: (() {
+                                  if (_key.currentState!.validate()) {
+                                    showDialog(
+                                        context: context,
+                                        builder: (contex) {
+                                          return Center(
+                                            child: CircularProgressIndicator(
+                                                color:
+                                                    AppColors.backGoundColor),
+                                          );
+                                        });
+                                    FirebaseAuth.instance
+                                        .sendPasswordResetEmail(
+                                            email: _email.text)
+                                        .then((value) {
+                                      const snackBar = SnackBar(
+                                        content: Text(
+                                            'Check you mail to reset your password'),
+                                      );
+
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(snackBar);
+                                      Navigator.pop(context);
+                                      Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const LoginScreen()),
+                                          (route) => false);
+                                    });
+                                  }
+                                }),
                                 child: Center(
                                   child: Text(
                                     "Send Code",

@@ -1,14 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:promethean/screens/auth/login.dart';
+import 'package:promethean/screens/splashscreen.dart';
 import 'package:promethean/screens/user/homescreen.dart';
-
 import 'screens/user/addfaqscreen.dart';
+import 'screens/user/eventregistration.dart';
+import 'screens/user/regirationview.dart';
 import 'screens/user/registeredscreen.dart';
 import 'screens/user/searchscreen.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -26,7 +29,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Promethean-BVRIT(2K22)',
-      home: HomeScreen(),
+      home: EventRegistration(),
     );
   }
 }

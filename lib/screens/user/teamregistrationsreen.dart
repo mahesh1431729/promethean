@@ -1,15 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:promethean/utils/unitls.dart';
+import 'package:upi_payment_qrcode_generator/upi_payment_qrcode_generator.dart';
+import 'payment.dart';
 
 class TeamRegistrationScreen extends StatefulWidget {
-  TeamRegistrationScreen({super.key, required this.maxcount});
+  TeamRegistrationScreen(
+      {super.key,
+      required this.maxcount,
+      required this.id,
+      required this.upiID,
+      required this.cost,
+      required this.name,
+      required this.count});
   int maxcount;
+  String upiID;
+  String id;
+  int cost;
+  int count;
+  String name;
+
   @override
   State<TeamRegistrationScreen> createState() => _TeamRegistrationScreenState();
 }
 
 class _TeamRegistrationScreenState extends State<TeamRegistrationScreen> {
-  var details = {};
+  Map<String, dynamic> details = {};
   int itemCount = 1;
   @override
   Widget build(BuildContext context) {
@@ -345,6 +360,8 @@ class _TeamRegistrationScreenState extends State<TeamRegistrationScreen> {
                                               )),
                                             )),
                                         Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: [
                                             index == itemCount
                                                 ? GestureDetector(
@@ -468,7 +485,38 @@ class _TeamRegistrationScreenState extends State<TeamRegistrationScreen> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8),
                           child: MaterialButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              if (details.length >= 4 &&
+                                  details.length % 4 == 0) {
+                                print(widget.cost * itemCount);
+                                var upiDetails = UPIDetails(
+                                  upiID: widget.upiID,
+                                  payeeName: widget.name,
+                                  amount: double.parse(
+                                      "${widget.cost * itemCount}"),
+                                );
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => PaymentScreen(
+                                              count: widget.count + 1,
+                                              id: widget.id,
+                                              paymentQR: UPIPaymentQRCode(
+                                                  upiDetails: upiDetails,
+                                                  size: 200),
+                                              details: details,
+                                            )),
+                                    (route) => true);
+                              } else {
+                                const snackBar = SnackBar(
+                                  content:
+                                      Text('Please enter details correctly'),
+                                );
+
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                              }
+                            },
                             child: Center(
                               child: Text(
                                 "Register and pay",

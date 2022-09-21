@@ -1,24 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:promethean/screens/user/regirationview.dart';
-import 'package:promethean/utils/unitls.dart';
-import 'eventscreen.dart';
 
-class RegisteredEvents extends StatefulWidget {
-  const RegisteredEvents({super.key});
+import '../../utils/unitls.dart';
+
+class Announcements extends StatefulWidget {
+  const Announcements({Key? key}) : super(key: key);
 
   @override
-  State<RegisteredEvents> createState() => _RegisteredEventsState();
+  State<Announcements> createState() => _AnnouncementsState();
 }
 
-class _RegisteredEventsState extends State<RegisteredEvents> {
+class _AnnouncementsState extends State<Announcements> {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: AppColors.backGoundColor,
       body: Container(
@@ -27,9 +25,7 @@ class _RegisteredEventsState extends State<RegisteredEvents> {
         padding: EdgeInsets.symmetric(horizontal: width * 0.05),
         child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
             stream: FirebaseFirestore.instance
-                .collection('users')
-                .doc(FirebaseAuth.instance.currentUser!.uid)
-                .collection('registrations')
+                .collection('announcements')
                 .snapshots(),
             builder: (context, snapshot) {
               return !snapshot.hasData
@@ -95,11 +91,11 @@ class _RegisteredEventsState extends State<RegisteredEvents> {
                                                             fit: BoxFit.cover,
                                                           ));
                                                 }),
-                                            // CircleAvatar(
-                                            //   // minRadius: 100,
-                                            //   // maxRadius: 200,
-                                            //   radius: width * 0.07,
-                                            // ),
+// CircleAvatar(
+//   // minRadius: 100,
+//   // maxRadius: 200,
+//   radius: width * 0.07,
+// ),
                                             SizedBox(
                                               width: width * 0.02,
                                             ),
@@ -139,7 +135,7 @@ class _RegisteredEventsState extends State<RegisteredEvents> {
                                   Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
-                                      "Registered Events",
+                                      "Announcements",
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: width * 0.055,
@@ -153,7 +149,7 @@ class _RegisteredEventsState extends State<RegisteredEvents> {
                                   ),
                                   len == 0
                                       ? Text(
-                                          "You haven't registered for any event\nHurry up..!",
+                                          "No Announcements",
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             color: Colors.white,
@@ -176,126 +172,93 @@ class _RegisteredEventsState extends State<RegisteredEvents> {
                                       ? Container()
                                       : GestureDetector(
                                           onTap: (() {
-                                            Navigator.pushAndRemoveUntil(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      RegistrationView(
-                                                    id: snapshot.data!
-                                                        .docs[index - 1]['id'],
-                                                  ),
-                                                ),
-                                                (route) => true);
+                                            // Navigator.pushAndRemoveUntil(
+                                            //     context,
+                                            //     MaterialPageRoute(
+                                            //       builder: (context) =>
+                                            //           RegistrationView(
+                                            //             id: snapshot.data!
+                                            //                 .docs[index - 1]['id'],
+                                            //           ),
+                                            //     ),
+                                            //         (route) => true);
                                           }),
                                           child: Container(
-                                            width: width * 0.6,
-                                            padding: EdgeInsets.all(10),
-                                            height: width * 0.25,
-                                            child: Row(
-                                              children: [
-                                                ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          width * 0.1),
-                                                  child: Image.asset(
-                                                    "assets/images/rectangle.png",
-                                                    fit: BoxFit.cover,
-                                                    width: width * 0.15,
-                                                    height: width * 0.15,
+                                              width: width * 0.6,
+                                              padding: EdgeInsets.all(10),
+                                              height: width * 0.25,
+                                              child: Row(
+                                                children: [
+                                                  ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            width * 0.1),
+                                                    child: Image.network(
+// "assets/images/rectangle.png",
+                                                      snapshot.data!
+                                                              .docs[index - 1]
+                                                          ['eventImage'],
+                                                      fit: BoxFit.cover,
+                                                      width: width * 0.15,
+                                                      height: width * 0.15,
+                                                    ),
                                                   ),
-                                                ),
-                                                SizedBox(
-                                                  width: width * 0.02,
-                                                ),
-                                                Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      width: width * 0.6,
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                            snapShot.data![
-                                                                'eventName'],
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize:
-                                                                  width * 0.04,
-                                                              fontFamily:
-                                                                  "Urbanist",
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            snapShot
-                                                                .data!['date'],
-                                                            style: TextStyle(
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      126,
-                                                                      226,
-                                                                      226,
-                                                                      226),
-                                                              fontSize:
-                                                                  width * 0.028,
-                                                            ),
-                                                          )
-                                                        ],
+                                                  SizedBox(
+                                                    width: width * 0.02,
+                                                  ),
+                                                  Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        snapshot.data!
+                                                                .docs[index - 1]
+                                                            ['title'],
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize:
+                                                              width * 0.04,
+                                                          fontFamily:
+                                                              "Urbanist",
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                        ),
                                                       ),
-                                                    ),
-                                                    Container(
-                                                      width: width * 0.6,
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                            snapShot.data![
-                                                                'branch'],
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize:
-                                                                  width * 0.04,
-                                                              fontFamily:
-                                                                  "Urbanist",
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            snapShot
-                                                                .data!['time'],
-                                                            style: TextStyle(
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      126,
-                                                                      226,
-                                                                      226,
-                                                                      226),
-                                                              fontSize:
-                                                                  width * 0.032,
-                                                            ),
-                                                          )
-                                                        ],
+                                                      Text(
+                                                        snapshot.data!
+                                                                .docs[index - 1]
+                                                            ['eventName'],
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize:
+                                                              width * 0.02,
+                                                          fontFamily:
+                                                              "Urbanist",
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                          ),
+                                                      SizedBox(
+                                                        width: width * 0.7,
+                                                        child: Text(
+                                                          snapshot.data!.docs[
+                                                                  index - 1]
+                                                              ['description'],
+                                                          style: TextStyle(
+                                                            color: Color(
+                                                                0x7fffffff),
+                                                            fontSize: 14,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  )
+                                                ],
+                                              )),
                                         );
                                 });
                       });

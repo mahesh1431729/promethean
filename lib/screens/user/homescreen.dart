@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:promethean/utils/unitls.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'announcements.dart';
 import 'home.dart';
 import 'registeredscreen.dart';
 import 'userprofile.dart';
@@ -13,6 +15,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
+
   int currentIndex = 0;
 
   @override
@@ -28,8 +32,13 @@ class _HomeScreenState extends State<HomeScreen> {
         child: currentIndex == 0
             ? Home()
             : currentIndex == 1
-                ? RegisteredEvents()
-                : Profile(),
+                ? Announcements()
+                : currentIndex == 2
+                    ? Profile()
+                    : SfPdfViewer.asset(
+                        'assets/transportation.pdf',
+                        key: _pdfViewerKey,
+                      ),
       ),
       bottomNavigationBar: ClipRRect(
         borderRadius: BorderRadius.only(
@@ -58,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               BottomNavigationBarItem(
                   icon: SvgPicture.asset(
-                    "assets/images/register.svg",
+                    "assets/images/notification.svg",
                     color: currentIndex == 1
                         ? AppColors.iconColor
                         : AppColors.disabledIcon,

@@ -1,26 +1,36 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:promethean/screens/auth/forgotpassword.dart';
-import 'package:promethean/screens/auth/signup.dart';
 import 'package:promethean/screens/user/homescreen.dart';
 
+import 'login.dart';
 import '../../utils/unitls.dart';
 
-class LoginModule extends StatefulWidget {
-  const LoginModule({super.key});
-
+class ConfirmPasswordModule extends StatefulWidget {
+  ConfirmPasswordModule({
+    super.key,
+    required this.collegeName,
+    required this.contact,
+    required this.email,
+    required this.userName,
+  });
+  String userName;
+  String email;
+  String collegeName;
+  String contact;
   @override
-  State<LoginModule> createState() => _LoginModuleState();
+  State<ConfirmPasswordModule> createState() => _ConfirmPasswordModuleState();
 }
 
-class _LoginModuleState extends State<LoginModule> {
-  TextEditingController email = TextEditingController();
-  TextEditingController password = TextEditingController();
-  var key = GlobalKey<FormState>();
+class _ConfirmPasswordModuleState extends State<ConfirmPasswordModule> {
   bool isPassword = true;
+  bool isconfirmPassword = true;
+  TextEditingController password = TextEditingController();
+  TextEditingController confirmPassword = TextEditingController();
+  var key = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -56,54 +66,6 @@ class _LoginModuleState extends State<LoginModule> {
                       fontFamily: "Urbanist",
                       fontWeight: FontWeight.w700,
                     ),
-                  ),
-                ),
-                SizedBox(
-                  height: height * 0.02,
-                ),
-                Container(
-                  width: width * 0.75,
-                  height: 56,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: Color(0xffdadada),
-                      width: 1,
-                    ),
-                    color: Color(0xfff7f8f9),
-                  ),
-                  child: TextFormField(
-                    controller: email,
-                    validator: ((value) {
-                      MultiValidator([
-                        EmailValidator(
-                            errorText: "Enter a valid email address"),
-                        RequiredValidator(errorText: "This field is required"),
-                      ]);
-                    }),
-                    style: TextStyle(
-                      color: AppColors.backGoundColor,
-                      fontSize: width * 0.04,
-                      fontFamily: "Urbanist",
-                      fontWeight: FontWeight.w700,
-                    ),
-                    decoration: InputDecoration(
-                        labelText: "Email",
-                        labelStyle: TextStyle(
-                          color: Colors.grey,
-                          fontSize: width * 0.035,
-                          fontFamily: "Urbanist",
-                          fontWeight: FontWeight.w700,
-                        ),
-                        hintText: "Enter your email",
-                        hintStyle: TextStyle(
-                          color: Color(0xff8390a1),
-                          fontSize: width * 0.035,
-                          fontFamily: "Urbanist",
-                          fontWeight: FontWeight.w500,
-                        ),
-                        border:
-                            OutlineInputBorder(borderSide: BorderSide.none)),
                   ),
                 ),
                 SizedBox(
@@ -168,33 +130,73 @@ class _LoginModuleState extends State<LoginModule> {
                             OutlineInputBorder(borderSide: BorderSide.none)),
                   ),
                 ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: EdgeInsets.only(right: width * 0.08),
-                    child: TextButton(
-                      onPressed: (() {
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ForgotpasswordScreen()),
-                            (route) => true);
-                      }),
-                      child: Text(
-                        "Forgot Password?",
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                          color: Color(0xff6a707c),
+                SizedBox(
+                  height: height * 0.02,
+                ),
+                Container(
+                  width: width * 0.75,
+                  height: 56,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: Color(0xffdadada),
+                      width: 1,
+                    ),
+                    color: Color(0xfff7f8f9),
+                  ),
+                  child: TextFormField(
+                    obscureText: isconfirmPassword,
+                    controller: confirmPassword,
+                    validator: ((value) {
+                      MultiValidator([
+                        RequiredValidator(errorText: "This field is required"),
+                      ]);
+                      if (value != password.text) {
+                        return "Password didn't match";
+                      }
+                    }),
+                    style: TextStyle(
+                      color: AppColors.backGoundColor,
+                      fontSize: width * 0.04,
+                      fontFamily: "Urbanist",
+                      fontWeight: FontWeight.w700,
+                    ),
+                    decoration: InputDecoration(
+                        labelText: "Confirm password",
+                        labelStyle: TextStyle(
+                          color: Colors.grey,
                           fontSize: width * 0.035,
                           fontFamily: "Urbanist",
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w700,
                         ),
-                      ),
-                    ),
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isconfirmPassword = !isconfirmPassword;
+                            });
+                          },
+                          child: Icon(
+                            isconfirmPassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: Color(
+                              0xff6A707C,
+                            ),
+                          ),
+                        ),
+                        hintText: "Re-enter the password",
+                        hintStyle: TextStyle(
+                          color: Color(0xff8390a1),
+                          fontSize: width * 0.035,
+                          fontFamily: "Urbanist",
+                          fontWeight: FontWeight.w500,
+                        ),
+                        border:
+                            OutlineInputBorder(borderSide: BorderSide.none)),
                   ),
                 ),
                 SizedBox(
-                  height: height * 0.01,
+                  height: height * 0.05,
                 ),
                 Container(
                   width: width * 0.75,
@@ -217,21 +219,38 @@ class _LoginModuleState extends State<LoginModule> {
                                 );
                               });
                           FirebaseAuth.instance
-                              .signInWithEmailAndPassword(
-                                  email: email.text, password: password.text)
+                              .createUserWithEmailAndPassword(
+                                  email: widget.email, password: password.text)
+                              .then((value) => FirebaseFirestore.instance
+                                      .collection("users")
+                                      .doc(FirebaseAuth
+                                          .instance.currentUser!.uid)
+                                      .set({
+                                    'registrationCount': 0,
+                                    "profileImage":
+                                        "https://firebasestorage.googleapis.com/v0/b/promethean-bvrit.appspot.com/o/userImages%2F2022-09-17%2011%3A29%3A19.483030?alt=media&token=1407e358-8e33-4f7c-b95d-3520d7070b44",
+                                    "name": widget.userName,
+                                    "email": widget.email,
+                                    "collegeName": widget.collegeName,
+                                    "contact": widget.contact,
+                                  }))
                               .then((value) {
+                            FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(FirebaseAuth.instance.currentUser!.uid)
+                                .collection('registrations');
                             Navigator.pop(context);
                             Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const HomeScreen()),
+                                    builder: (context) => HomeScreen()),
                                 (route) => false);
                           });
                         }
                       }),
                       child: Center(
                         child: Text(
-                          "Login",
+                          "Continue",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white,
@@ -251,7 +270,7 @@ class _LoginModuleState extends State<LoginModule> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Don't have an account?",
+                        "Already have an account?",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 15,
@@ -263,11 +282,11 @@ class _LoginModuleState extends State<LoginModule> {
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SignUpScreen()),
+                                  builder: (context) => LoginScreen()),
                               (route) => false);
                         }),
                         child: Text(
-                          "Register Now",
+                          "Login Now",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 15,

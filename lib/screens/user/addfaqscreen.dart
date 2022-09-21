@@ -1,15 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:promethean/screens/user/homescreen.dart';
 import '../../utils/unitls.dart';
 
 class AddFAQ extends StatefulWidget {
-  const AddFAQ({super.key});
+  AddFAQ({super.key, required this.id});
+  String id;
 
   @override
   State<AddFAQ> createState() => _AddFAQState();
 }
 
 class _AddFAQState extends State<AddFAQ> {
+  TextEditingController question = TextEditingController();
+  TextEditingController description = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -87,11 +92,54 @@ class _AddFAQState extends State<AddFAQ> {
                     color: Color(0x00c4c4c4),
                   ),
                   child: TextFormField(
+                    controller: question,
+                    style: TextStyle(color: Colors.white60),
+                    maxLines: 1,
+                    decoration: InputDecoration(
+                      hintText: "Write your question in few words",
+                      hintStyle: TextStyle(color: Colors.white60),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: height * 0.05,
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Explain question",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: width * 0.04,
+                        fontFamily: "Lato",
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  width: width * 0.9,
+                  // height: ,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: Colors.white,
+                      width: 1,
+                    ),
+                    color: Color(0x00c4c4c4),
+                  ),
+                  child: TextFormField(
+                    controller: description,
                     style: TextStyle(color: Colors.white60),
                     minLines: 5,
                     maxLines: 10,
                     decoration: InputDecoration(
-                      hintText: "Question??",
+                      hintText: "Explain your question",
                       hintStyle: TextStyle(color: Colors.white60),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -112,7 +160,36 @@ class _AddFAQState extends State<AddFAQ> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8),
                         child: MaterialButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (contex) {
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                        color: AppColors.backGoundColor),
+                                  );
+                                });
+                            FirebaseFirestore.instance
+                                .collection('events')
+                                .doc(widget.id)
+                                .collection('questions')
+                                .add({
+                              'questions': question.text,
+                              'description': description.text,
+                            }).then((value) {
+                              Navigator.pop(context);
+                              const snackBar = SnackBar(
+                                content: Text('Added you question'),
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HomeScreen()),
+                                  (route) => false);
+                            });
+                          },
                           child: Center(
                             child: Text(
                               "Post",

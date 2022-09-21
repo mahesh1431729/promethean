@@ -17,25 +17,28 @@ class _LoginScreenState extends State<LoginScreen> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: FloatingActionButton(
-          mini: true,
-          onPressed: () {},
-          // focusColor: AppColors.focusColor,
-          backgroundColor: AppColors.focusColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Center(
-            child: Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black,
-            ),
-          ),
-        ),
-      ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
+      // floatingActionButton: Padding(
+      //   padding: const EdgeInsets.all(10.0),
+      //   child: FloatingActionButton(
+      //     mini: true,
+      //     onPressed: () {},
+      //     // focusColor: AppColors.focusColor,
+      //     backgroundColor: AppColors.focusColor,
+      //     shape: RoundedRectangleBorder(
+      //       borderRadius: BorderRadius.circular(12),
+      //     ),
+      //     child: Center(
+      //       child: Padding(
+      //         padding: const EdgeInsets.only(left:10.0),
+      //         child: Icon(
+      //           Icons.arrow_back_ios,
+      //           color: Colors.black,
+      //         ),
+      //       ),
+      //     ),
+      //   ),
+      // ),
       backgroundColor: AppColors.backGoundColor,
       body: ListView(
         children: [
@@ -43,7 +46,18 @@ class _LoginScreenState extends State<LoginScreen> {
             height: height,
             width: width,
             child: Column(
-              children: [LoginModule()],
+              children: [
+                SizedBox(
+                  height: height * 0.45,
+                  child: Center(
+                      child: Image.asset(
+                    'assets/images/finlalogo.png',
+                    height: height * 0.3,
+                    fit: BoxFit.contain,
+                  )),
+                ),
+                LoginModule()
+              ],
             ),
           )
         ],
