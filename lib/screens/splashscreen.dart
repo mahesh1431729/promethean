@@ -8,6 +8,8 @@ import 'package:promethean/screens/user/eventregistration.dart';
 import 'package:promethean/screens/user/homescreen.dart';
 import 'package:promethean/utils/unitls.dart';
 
+import 'auth/userChecking.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
@@ -26,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
           MaterialPageRoute(
             builder: (context) => FirebaseAuth.instance.currentUser == null
                 ? const SignUpScreen()
-                : const EventRegistration(),
+                : const VerifyUser(),
           ),
           (route) => false);
     });

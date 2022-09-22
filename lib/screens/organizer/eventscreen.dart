@@ -6,15 +6,15 @@ import 'package:promethean/screens/user/teamregistrationsreen.dart';
 
 import '../../utils/unitls.dart';
 
-class EventScreen extends StatefulWidget {
-  EventScreen({super.key, required this.id});
+class OrganizerEventScreen extends StatefulWidget {
+  OrganizerEventScreen({super.key, required this.id});
   String id;
 
   @override
-  State<EventScreen> createState() => _EventScreenState();
+  State<OrganizerEventScreen> createState() => _OrganizerEventScreenState();
 }
 
-class _EventScreenState extends State<EventScreen> {
+class _OrganizerEventScreenState extends State<OrganizerEventScreen> {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -73,126 +73,126 @@ class _EventScreenState extends State<EventScreen> {
                                         ),
                                       ),
                                     ),
-                                    GestureDetector(
-                                      onTap: (() {
-                                        showDialog(
-                                            context: context,
-                                            builder: ((context) {
-                                              return Stack(
-                                                children: [
-                                                  Positioned(
-                                                    top: height * 0.07,
-                                                    right: 50,
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      child: Material(
-                                                          child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: Column(
-                                                          children: [
-                                                            Text(
-                                                              "Announcements",
-                                                              style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize:
-                                                                    width *
-                                                                        0.06,
-                                                                fontFamily:
-                                                                    "Urbanist",
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700,
-                                                              ),
-                                                            ),
-                                                            StreamBuilder<
-                                                                    QuerySnapshot<
-                                                                        Map<String,
-                                                                            dynamic>>>(
-                                                                stream: FirebaseFirestore
-                                                                    .instance
-                                                                    .collection(
-                                                                        'events')
-                                                                    .doc(widget
-                                                                        .id)
-                                                                    .collection(
-                                                                        'announcements')
-                                                                    .snapshots(),
-                                                                builder: (context,
-                                                                    snapshot) {
-                                                                  return Container(
-                                                                    height:
-                                                                        height *
-                                                                            0.3,
-                                                                    width:
-                                                                        width *
-                                                                            0.5,
-                                                                    child: !snapshot
-                                                                            .hasData
-                                                                        ? Center(
-                                                                            child:
-                                                                                CircularProgressIndicator(color: Colors.black),
-                                                                          )
-                                                                        : snapshot.data!.docs.length ==
-                                                                                0
-                                                                            ? Center(
-                                                                                child: Text(
-                                                                                  "No announcements so far",
-                                                                                  style: TextStyle(
-                                                                                    color: Color(0x7f000000),
-                                                                                    fontSize: 14,
-                                                                                    fontWeight: FontWeight.bold,
-                                                                                  ),
-                                                                                ),
-                                                                              )
-                                                                            : ListView.builder(
-                                                                                itemCount: snapshot.data!.docs.length,
-                                                                                itemBuilder: (context, index) {
-                                                                                  return Padding(
-                                                                                    padding: const EdgeInsets.all(8.0),
-                                                                                    child: SizedBox(
-                                                                                      width: width * 0.5,
-                                                                                      child: Column(
-                                                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                        children: [
-                                                                                          Text(
-                                                                                            snapshot.data!.docs[index]['title'],
-                                                                                            style: TextStyle(
-                                                                                              color: Color(0x7f000000),
-                                                                                              fontSize: 14,
-                                                                                              fontWeight: FontWeight.bold,
-                                                                                            ),
-                                                                                          ),
-                                                                                          Text(
-                                                                                            snapshot.data!.docs[index]['description'],
-                                                                                            style: TextStyle(
-                                                                                              color: Color(0x7f000000),
-                                                                                              fontSize: 14,
-                                                                                            ),
-                                                                                          ),
-                                                                                        ],
-                                                                                      ),
-                                                                                    ),
-                                                                                  );
-                                                                                }),
-                                                                  );
-                                                                }),
-                                                          ],
-                                                        ),
-                                                      )),
-                                                    ),
-                                                  ),
-                                                ],
-                                              );
-                                            }));
-                                      }),
-                                      child: SvgPicture.asset(
-                                          "assets/images/announcements.svg"),
-                                    ),
+                                    // GestureDetector(
+                                    //   onTap: (() {
+                                    //     showDialog(
+                                    //         context: context,
+                                    //         builder: ((context) {
+                                    //           return Stack(
+                                    //             children: [
+                                    //               Positioned(
+                                    //                 top: height * 0.07,
+                                    //                 right: 50,
+                                    //                 child: ClipRRect(
+                                    //                   borderRadius:
+                                    //                       BorderRadius.circular(
+                                    //                           10),
+                                    //                   child: Material(
+                                    //                       child: Padding(
+                                    //                     padding:
+                                    //                         const EdgeInsets
+                                    //                             .all(8.0),
+                                    //                     child: Column(
+                                    //                       children: [
+                                    //                         Text(
+                                    //                           "Announcements",
+                                    //                           style: TextStyle(
+                                    //                             color: Colors
+                                    //                                 .black,
+                                    //                             fontSize:
+                                    //                                 width *
+                                    //                                     0.06,
+                                    //                             fontFamily:
+                                    //                                 "Urbanist",
+                                    //                             fontWeight:
+                                    //                                 FontWeight
+                                    //                                     .w700,
+                                    //                           ),
+                                    //                         ),
+                                    //                         StreamBuilder<
+                                    //                                 QuerySnapshot<
+                                    //                                     Map<String,
+                                    //                                         dynamic>>>(
+                                    //                             stream: FirebaseFirestore
+                                    //                                 .instance
+                                    //                                 .collection(
+                                    //                                     'events')
+                                    //                                 .doc(widget
+                                    //                                     .id)
+                                    //                                 .collection(
+                                    //                                     'announcements')
+                                    //                                 .snapshots(),
+                                    //                             builder: (context,
+                                    //                                 snapshot) {
+                                    //                               return Container(
+                                    //                                 height:
+                                    //                                     height *
+                                    //                                         0.3,
+                                    //                                 width:
+                                    //                                     width *
+                                    //                                         0.5,
+                                    //                                 child: !snapshot
+                                    //                                         .hasData
+                                    //                                     ? Center(
+                                    //                                         child:
+                                    //                                             CircularProgressIndicator(color: Colors.black),
+                                    //                                       )
+                                    //                                     : snapshot.data!.docs.length ==
+                                    //                                             0
+                                    //                                         ? Center(
+                                    //                                             child: Text(
+                                    //                                               "No announcements so far",
+                                    //                                               style: TextStyle(
+                                    //                                                 color: Color(0x7f000000),
+                                    //                                                 fontSize: 14,
+                                    //                                                 fontWeight: FontWeight.bold,
+                                    //                                               ),
+                                    //                                             ),
+                                    //                                           )
+                                    //                                         : ListView.builder(
+                                    //                                             itemCount: snapshot.data!.docs.length,
+                                    //                                             itemBuilder: (context, index) {
+                                    //                                               return Padding(
+                                    //                                                 padding: const EdgeInsets.all(8.0),
+                                    //                                                 child: SizedBox(
+                                    //                                                   width: width * 0.5,
+                                    //                                                   child: Column(
+                                    //                                                     crossAxisAlignment: CrossAxisAlignment.start,
+                                    //                                                     children: [
+                                    //                                                       Text(
+                                    //                                                         snapshot.data!.docs[index]['title'],
+                                    //                                                         style: TextStyle(
+                                    //                                                           color: Color(0x7f000000),
+                                    //                                                           fontSize: 14,
+                                    //                                                           fontWeight: FontWeight.bold,
+                                    //                                                         ),
+                                    //                                                       ),
+                                    //                                                       Text(
+                                    //                                                         snapshot.data!.docs[index]['description'],
+                                    //                                                         style: TextStyle(
+                                    //                                                           color: Color(0x7f000000),
+                                    //                                                           fontSize: 14,
+                                    //                                                         ),
+                                    //                                                       ),
+                                    //                                                     ],
+                                    //                                                   ),
+                                    //                                                 ),
+                                    //                                               );
+                                    //                                             }),
+                                    //                               );
+                                    //                             }),
+                                    //                       ],
+                                    //                     ),
+                                    //                   )),
+                                    //                 ),
+                                    //               ),
+                                    //             ],
+                                    //           );
+                                    //         }));
+                                    //   }),
+                                    //   child: SvgPicture.asset(
+                                    //       "assets/images/announcements.svg"),
+                                    // ),
                                   ],
                                 ),
                               ),
@@ -200,13 +200,11 @@ class _EventScreenState extends State<EventScreen> {
                           ),
                           ClipRRect(
                             borderRadius: BorderRadius.circular(16),
-                            // child: Image.network(
-                            //   snapshot.data!['eventImage'],
-                            child: Image.asset(
-                              "assets/images/csm.png",
+                            child: Image.network(
+                              snapshot.data!['eventImage'],
                               fit: BoxFit.contain,
-                              width: width * 0.95,
-                              height: height * 0.25,
+                              // width: width * 0.95,
+                              // height: height * 0.25,
                             ),
                           ),
                           SizedBox(
@@ -291,7 +289,7 @@ class _EventScreenState extends State<EventScreen> {
                                         },
                                         child: Center(
                                           child: Text(
-                                            "Register",
+                                            "Participants",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               color: Colors.black,

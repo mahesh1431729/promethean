@@ -505,6 +505,8 @@ class _TeamRegistrationScreenState extends State<TeamRegistrationScreen> {
                                                   upiDetails: upiDetails,
                                                   size: 200),
                                               details: details,
+                                              amount:
+                                                  "${widget.cost * itemCount}",
                                             )),
                                     (route) => true);
                               } else {

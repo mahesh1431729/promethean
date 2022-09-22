@@ -89,8 +89,10 @@ class _HomeState extends State<Home> {
                                     ),
                                     Container(
                                       height: height *
-                                          0.3 *
-                                          (snapshot.data!.docs.length % 2 + 1),
+                                          0.27 *
+                                          (snapshot.data!.docs.length % 2 +
+                                              int.parse(
+                                                  "${snapshot.data!.docs.length / 2}")),
                                       child: GridView.builder(
                                           // shrinkWrap: true,
                                           physics:
@@ -119,7 +121,7 @@ class _HomeState extends State<Home> {
                                                             ['eventImage'],
                                                         height: height * 0.25,
                                                         width: width * 0.45,
-                                                        fit: BoxFit.cover,
+                                                        fit: BoxFit.contain,
                                                       ),
                                                     ),
                                                     Positioned(
@@ -483,7 +485,6 @@ class _HomeState extends State<Home> {
               // left: 20,
               child: Container(
                 width: width,
-
                 padding: EdgeInsets.all(20),
                 color: AppColors.backGoundColor,
                 child: Row(

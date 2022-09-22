@@ -34,8 +34,8 @@ class _CarasolState extends State<Carasol> {
                 ? ClipRRect(
                     borderRadius: BorderRadius.circular(16),
                     child: Image.asset(
-                      "assets/images/rectangle.png",
-                      fit: BoxFit.cover,
+                      "assets/images/csm.png",
+                      fit: BoxFit.contain,
                       width: width * 0.95,
                       height: height * 0.25,
                     ),
@@ -68,8 +68,8 @@ class _CarasolState extends State<Carasol> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(16),
                                     child: Image.network(
-                                      // "assets/images/rectangle.png",
-                                      i[0],
+                                      "assets/images/csm.png",
+                                      // i[0],
                                       fit: BoxFit.cover,
                                       width: width * 0.95,
                                       height: height * 0.25,

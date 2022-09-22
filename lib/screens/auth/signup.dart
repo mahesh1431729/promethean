@@ -353,42 +353,42 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       ),
                                     ),
                                   ),
-                                  // Expanded(
-                                  //     child: Align(
-                                  //   alignment: FractionalOffset.bottomCenter,
-                                  //   child: Row(
-                                  //     mainAxisAlignment:
-                                  //         MainAxisAlignment.center,
-                                  //     children: [
-                                  //       Text(
-                                  //         "Already have an account?",
-                                  //         textAlign: TextAlign.center,
-                                  //         style: TextStyle(
-                                  //           fontSize: 15,
-                                  //           letterSpacing: 0.15,
-                                  //         ),
-                                  //       ),
-                                  //       TextButton(
-                                  //         onPressed: (() {
-                                  //           Navigator.pushAndRemoveUntil(
-                                  //               context,
-                                  //               MaterialPageRoute(
-                                  //                   builder: (context) =>
-                                  //                       LoginScreen()),
-                                  //               (route) => false);
-                                  //         }),
-                                  //         child: Text(
-                                  //           "Login Now",
-                                  //           textAlign: TextAlign.center,
-                                  //           style: TextStyle(
-                                  //             fontSize: 15,
-                                  //             letterSpacing: 0.15,
-                                  //           ),
-                                  //         ),
-                                  //       )
-                                  //     ],
-                                  //   ),
-                                  // ))
+                                  Expanded(
+                                      child: Align(
+                                    alignment: FractionalOffset.bottomCenter,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Already have an account?",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            letterSpacing: 0.15,
+                                          ),
+                                        ),
+                                        TextButton(
+                                          onPressed: (() {
+                                            Navigator.pushAndRemoveUntil(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        LoginScreen()),
+                                                (route) => false);
+                                          }),
+                                          child: Text(
+                                            "Login Now",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              letterSpacing: 0.15,
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ))
                                 ],
                               ),
                             ),

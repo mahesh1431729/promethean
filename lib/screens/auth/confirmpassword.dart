@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -219,35 +220,108 @@ class _ConfirmPasswordModuleState extends State<ConfirmPasswordModule> {
                                       color: AppColors.backGoundColor),
                                 );
                               });
-                          FirebaseAuth.instance
-                              .createUserWithEmailAndPassword(
-                                  email: widget.email, password: password.text)
-                              .then((value) => FirebaseFirestore.instance
-                                      .collection("users")
-                                      .doc(FirebaseAuth
-                                          .instance.currentUser!.uid)
-                                      .set({
-                                    'registrationCount': 0,
-                                    "profileImage":
-                                        "https://firebasestorage.googleapis.com/v0/b/promethean-bvrit.appspot.com/o/userImages%2F2022-09-17%2011%3A29%3A19.483030?alt=media&token=1407e358-8e33-4f7c-b95d-3520d7070b44",
-                                    "name": widget.userName,
-                                    "email": widget.email,
-                                    "branch": widget.branch,
-                                    "contact": widget.contact,
-                                    'organizer ': true,
-                                  }))
-                              .then((value) {
-                            FirebaseFirestore.instance
-                                .collection('users')
-                                .doc(FirebaseAuth.instance.currentUser!.uid)
-                                .collection('registrations');
-                            Navigator.pop(context);
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => EventRegistration()),
-                                (route) => false);
-                          });
+                          try {
+                            FirebaseAuth.instance
+                                .createUserWithEmailAndPassword(
+                                    email: widget.email,
+                                    password: password.text)
+                                .then((value) => FirebaseFirestore.instance
+                                        .collection("users")
+                                        .doc(FirebaseAuth
+                                            .instance.currentUser!.uid)
+                                        .set({
+                                      'registrationCount': 0,
+                                      "profileImage":
+                                          "https://firebasestorage.googleapis.com/v0/b/promethean-bvrit.appspot.com/o/userImages%2F2022-09-17%2011%3A29%3A19.483030?alt=media&token=1407e358-8e33-4f7c-b95d-3520d7070b44",
+                                      "name": widget.userName,
+                                      "email": widget.email,
+                                      "branch": widget.branch,
+                                      "contact": widget.contact,
+                                      'organizer ': false,
+                                    }))
+                                .then((value) {
+                              FirebaseFirestore.instance
+                                  .collection('users')
+                                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                                  .collection('registrations');
+                              Navigator.pop(context);
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HomeScreen()),
+                                  (route) => false);
+                            });
+                          } catch (e) {
+                            if (e is PlatformException) {
+                              if (e.code == 'ERROR_EMAIL_ALREADY_IN_USE') {
+                                Navigator.pop(context);
+                                showDialog(
+                                    context: context,
+                                    builder: (contex) {
+                                      return Center(
+                                          child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Material(
+                                          child: Column(
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  'This email already exists..\n Please login',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: width * 0.04,
+                                                    fontFamily: "Urbanist",
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                // width: width * 0.,
+                                                height: 56,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  color: Color(0xff1e232c),
+                                                ),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                    child: MaterialButton(
+                                                      onPressed: (() {}),
+                                                      child: Center(
+                                                        child: Text(
+                                                          "Login",
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize:
+                                                                width * 0.04,
+                                                            fontFamily:
+                                                                "Urbanist",
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ));
+                                    });
+                              }
+                            }
+                          }
                         }
                       }),
                       child: Center(
@@ -265,40 +339,40 @@ class _ConfirmPasswordModuleState extends State<ConfirmPasswordModule> {
                     ),
                   ),
                 ),
-                // Expanded(
-                //     child: Align(
-                //   alignment: FractionalOffset.bottomCenter,
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     children: [
-                //       Text(
-                //         "Already have an account?",
-                //         textAlign: TextAlign.center,
-                //         style: TextStyle(
-                //           fontSize: 15,
-                //           letterSpacing: 0.15,
-                //         ),
-                //       ),
-                //       TextButton(
-                //         onPressed: (() {
-                //           Navigator.pushAndRemoveUntil(
-                //               context,
-                //               MaterialPageRoute(
-                //                   builder: (context) => LoginScreen()),
-                //               (route) => false);
-                //         }),
-                //         child: Text(
-                //           "Login Now",
-                //           textAlign: TextAlign.center,
-                //           style: TextStyle(
-                //             fontSize: 15,
-                //             letterSpacing: 0.15,
-                //           ),
-                //         ),
-                //       )
-                //     ],
-                //   ),
-                // ))
+                Expanded(
+                    child: Align(
+                  alignment: FractionalOffset.bottomCenter,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Already have an account?",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 15,
+                          letterSpacing: 0.15,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: (() {
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginScreen()),
+                              (route) => false);
+                        }),
+                        child: Text(
+                          "Login Now",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 15,
+                            letterSpacing: 0.15,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ))
               ],
             ),
           ),
