@@ -326,8 +326,7 @@ class _ParticipantsViewState extends State<ParticipantsView> {
                                         ),
                                       ),
                                       snapshot.data!['count'] == index
-                                          ? Image.asset(
-                                              'assets/images/payment.jpg')
+                                          ? Image.network(snapshot.data!.get('image'))
                                           : Container()
                                     ],
                                   ),

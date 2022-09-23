@@ -33,27 +33,21 @@ class _ParticpantsState extends State<Particpants> {
                 .collection('registrations')
                 .snapshots(),
             builder: (context, snapshot) {
+              var len=0;
+              if(snapshot.hasData){
+                print(snapshot.data!.docs[0]);
+                len = snapshot.data!.docs.length;
+                print(len);
+              }
               return !snapshot.hasData
                   ? Center(
                       child: CircularProgressIndicator(
                           color: AppColors.focusColor),
                     )
-                  : snapshot.hasError
-                      ? Center(
-                          child: Text(
-                            "No praticipants yet",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: width * 0.04,
-                              fontFamily: "Urbanist",
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        )
-                      : ListView.builder(
+                  : ListView.builder(
                           itemCount: snapshot.data!.docs.length + 1,
                           itemBuilder: (context, index) {
-                            var len = snapshot.data!.docs.length;
+
                             return index == 0
                                 ? Column(
                                     children: [
@@ -206,6 +200,7 @@ class _ParticpantsState extends State<Particpants> {
                                           (route) => true);
                                     }),
                                     child: Container(
+                                      color: Colors.white,
                                       width: width,
                                       padding: EdgeInsets.all(10),
                                       height: height * 0.1,
@@ -253,16 +248,16 @@ class _ParticpantsState extends State<Particpants> {
                                                             FontWeight.w700,
                                                       ),
                                                     ),
-                                                    Text(
-                                                      snapshot.data!
-                                                              .docs[index - 1]
-                                                          ['date'],
-                                                      style: TextStyle(
-                                                        color:
-                                                            Color(0x7f000000),
-                                                        fontSize: width * 0.028,
-                                                      ),
-                                                    )
+                                                    // Text(
+                                                    //   snapshot.data!
+                                                    //           .docs[index - 1]
+                                                    //       ['date'],
+                                                    //   style: TextStyle(
+                                                    //     color:
+                                                    //         Color(0x7f000000),
+                                                    //     fontSize: width * 0.028,
+                                                    //   ),
+                                                    // )
                                                   ],
                                                 ),
                                               ),

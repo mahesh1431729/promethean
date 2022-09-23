@@ -200,10 +200,10 @@ class _EventScreenState extends State<EventScreen> {
                           ),
                           ClipRRect(
                             borderRadius: BorderRadius.circular(16),
-                            // child: Image.network(
-                            //   snapshot.data!['eventImage'],
-                            child: Image.asset(
-                              "assets/images/csm.png",
+                            child: Image.network(
+                              snapshot.data!['eventImage'],
+                            // child: Image.asset(
+                            //   "assets/images/csm.png",
                               fit: BoxFit.contain,
                               width: width * 0.95,
                               height: height * 0.25,
@@ -249,13 +249,16 @@ class _EventScreenState extends State<EventScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    snapshot.data!['eventName'],
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: width * 0.065,
-                                      fontFamily: "Urbanist",
-                                      fontWeight: FontWeight.w700,
+                                  SizedBox(
+                                    width:width*0.6,
+                                    child: Text(
+                                      snapshot.data!['eventName'],
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: width * 0.065,
+                                        fontFamily: "Urbanist",
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                     ),
                                   ),
                                   Container(

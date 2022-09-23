@@ -6,8 +6,10 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:promethean/screens/auth/forgotpassword.dart';
 import 'package:promethean/screens/auth/signup.dart';
+import 'package:promethean/screens/splashscreen.dart';
 import 'package:promethean/screens/user/eventregistration.dart';
 import 'package:promethean/screens/user/homescreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utils/unitls.dart';
 
@@ -218,13 +220,16 @@ class _LoginModuleState extends State<LoginModule> {
                             FirebaseAuth.instance
                                 .signInWithEmailAndPassword(
                                     email: email.text, password: password.text)
-                                .then((value) {
+                                .then((value) async {
+                              SharedPreferences shared_preferences =
+                                  await SharedPreferences.getInstance();
+                              shared_preferences.setInt('count', 0);
                               Navigator.pop(context);
                               Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const HomeScreen()),
+                                          const SplashScreen()),
                                   (route) => false);
                             });
                           } catch (e) {

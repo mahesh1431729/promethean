@@ -370,8 +370,17 @@ class _ProfileState extends State<Profile> {
                             borderRadius: BorderRadius.circular(8),
                             child: MaterialButton(
                               onPressed: (() {
+                                showDialog(
+                                    context: context,
+                                    builder: (contex) {
+                                      return Center(
+                                        child: CircularProgressIndicator(
+                                            color: AppColors.backGoundColor),
+                                      );
+                                    });
                                 FirebaseAuth.instance.signOut().then(
                                   (value) {
+                                    Navigator.pop(context);
                                     Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(

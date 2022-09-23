@@ -123,13 +123,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       color: Color(0xfff7f8f9),
                                     ),
                                     child: TextFormField(
-                                      validator: ((value) {
+                                      validator:
                                         MultiValidator([
                                           RequiredValidator(
                                               errorText:
                                                   "This field is required"),
-                                        ]);
-                                      }),
+                                        ]),
                                       controller: userName,
                                       style: TextStyle(
                                         color: AppColors.backGoundColor,
@@ -171,7 +170,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       color: Color(0xfff7f8f9),
                                     ),
                                     child: TextFormField(
-                                      validator: ((value) {
+                                      validator:
                                         MultiValidator([
                                           EmailValidator(
                                               errorText:
@@ -179,8 +178,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           RequiredValidator(
                                               errorText:
                                                   "This field is required"),
-                                        ]);
-                                      }),
+                                        ]),
+
                                       controller: email,
                                       style: TextStyle(
                                         color: AppColors.backGoundColor,
@@ -212,7 +211,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                   Container(
                                     width: width * 0.75,
-                                    height: 41,
+                                    height: 56,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8),
                                       border: Border.all(
@@ -221,50 +220,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       ),
                                       color: Color(0xfff7f8f9),
                                     ),
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 10.0),
-                                      child: DropdownButton(
-                                        selectedItemBuilder: (context) {
-                                          print(dropdownValue);
-                                          return [
-                                            Center(
-                                              child: Text(
-                                                dropdownValue,
-                                                style: TextStyle(
-                                                    color: Colors.black),
-                                              ),
-                                            )
-                                          ];
-                                        },
-                                        value: dropdownValue,
-                                        underline: Container(),
-                                        icon: Expanded(
-                                            child: Icon(Icons.arrow_downward)),
-                                        elevation: 16,
-                                        style: const TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 255, 255, 255)),
-                                        onChanged: (value) {
-                                          setState(() {
-                                            dropdownValue = value!;
-                                          });
-                                        },
-                                        items:
-                                            list.map<DropdownMenuItem>((value) {
-                                          return DropdownMenuItem(
-                                            onTap: () {
-                                              setState(() {
-                                                dropdownValue = value!;
-                                              });
-                                            },
-                                            value: value,
-                                            child: Text(value,
-                                                style: TextStyle(
-                                                    color: Colors.black)),
-                                          );
-                                        }).toList(),
+                                    child: TextFormField(
+                                      controller: collegeName,
+                                      style: TextStyle(
+                                        color: AppColors.backGoundColor,
+                                        fontSize: width * 0.04,
+                                        fontFamily: "Urbanist",
+                                        fontWeight: FontWeight.w700,
                                       ),
+                                      decoration: InputDecoration(
+                                          labelText: "College name",
+                                          labelStyle: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: width * 0.035,
+                                            fontFamily: "Urbanist",
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                          hintText: "Enter your college name",
+                                          hintStyle: TextStyle(
+                                            color: Color(0xff8390a1),
+                                            fontSize: width * 0.035,
+                                            fontFamily: "Urbanist",
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                          border: OutlineInputBorder(
+                                              borderSide: BorderSide.none)),
                                     ),
                                   ),
                                   SizedBox(
@@ -282,7 +262,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       color: Color(0xfff7f8f9),
                                     ),
                                     child: TextFormField(
-                                      validator: ((value) {
+                                      validator:
                                         MultiValidator([
                                           MinLengthValidator(10,
                                               errorText:
@@ -290,8 +270,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           RequiredValidator(
                                               errorText:
                                                   "This field is required"),
-                                        ]);
-                                      }),
+                                        ]),
+
                                       controller: contact,
                                       style: TextStyle(
                                         color: AppColors.backGoundColor,
@@ -396,7 +376,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       )
                     : ConfirmPasswordModule(
-                        branch: dropdownValue,
+                        collegeName: collegeName.text,
                         contact: contact.text,
                         userName: userName.text,
                         email: email.text,
