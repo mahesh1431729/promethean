@@ -207,98 +207,82 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         borderRadius: BorderRadius.circular(8),
                         child: MaterialButton(
                           onPressed: () {
-                            // if (get) {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return Center(
-                                      child: CircularProgressIndicator());
-                                });
-                            Map<String, dynamic> _data = {'image': image};
+                            if (get) {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Center(
+                                        child: CircularProgressIndicator());
+                                  });
+                              Map<String, dynamic> _data = {'image': image};
 
-                            _data = (widget.details);
-                            _data.addAll({
-                              'amount': widget.amount,
-                              'image': image,
-                              'userID': FirebaseAuth.instance.currentUser!.uid,
-                              'id': widget.id,
-                              'count': widget.count,
-                            });
-                            // print(widget.details);
-                            // for (int i = 0;
-                            // i < widget.details.length;
-                            // i++) {
-                            //   _data.addAll(widget.details[i]);
-                            // }
-                            print(_data);
-                            print(widget.details);
-                            FirebaseFirestore.instance
-                                .collection('events')
-                                .doc(widget.id)
-                                .collection('registrations')
-                                .add(_data)
-                                .then((e_r) {
-                              print("1");
+                              _data = (widget.details);
+                              _data.addAll({
+                                'amount': widget.amount,
+                                'image': image,
+                                'userID':
+                                    FirebaseAuth.instance.currentUser!.uid,
+                                'id': widget.id,
+                                'count': widget.count,
+                              });
+                              // print(widget.details);
+                              // for (int i = 0;
+                              // i < widget.details.length;
+                              // i++) {
+                              //   _data.addAll(widget.details[i]);
+                              // }
+                              print(_data);
+                              print(widget.details);
                               FirebaseFirestore.instance
                                   .collection('events')
                                   .doc(widget.id)
-                                  .update({
-                                'registrationCount': widget.count
-                              }).then((_) async {
-                                // final qrCode = QrCode(4, QrErrorCorrectLevel.L)
-                                //   ..addData(e_r.id);
-                                // final ref = FirebaseStorage.instance
-                                //     .ref()
-                                //     .child("userImages")
-                                //     .child(DateTime.now().toString());
-                                // final qrSvgImageCode = generateQrSvgImage(
-                                //     qrCode: qrCode,
-                                //     imageSizeInPx: 500,
-                                //     title: "MySvg",
-                                //     colorA: Color.fromARGB(255, 255, 255, 255),
-                                //     colorB: Color.fromARGB(255, 255, 255, 255));
-                                // await ref.putString(qrSvgImageCode.toString());
-                                // String imageUrl = await ref.getDownloadURL();
-                                // // saveTextFile(
-                                // //     qrSvgImageCode.toString(), "mySvgFile.svg");
-                                // _data.addAll({
-                                //   'qr': imageUrl,
-                                // });
-                                print("2");
+                                  .collection('registrations')
+                                  .add(_data)
+                                  .then((e_r) {
+                                print("1");
                                 FirebaseFirestore.instance
-                                    .collection('users')
-                                    .doc(FirebaseAuth.instance.currentUser!.uid)
-                                    .collection('registrations')
+                                    .collection('events')
                                     .doc(widget.id)
-                                    .set(_data)
-                                    .then((value) async {
-                                  print("3");
-                                  SharedPreferences pref =
-                                      await SharedPreferences.getInstance();
-                                  int count = pref.getInt('count')!;
+                                    .update({
+                                  'registrationCount': widget.count
+                                }).then((_) async {
+                                  print("2");
                                   FirebaseFirestore.instance
                                       .collection('users')
                                       .doc(FirebaseAuth
                                           .instance.currentUser!.uid)
-                                      .update({'registrationCount': count + 1});
+                                      .collection('registrations')
+                                      .doc(widget.id)
+                                      .set(_data)
+                                      .then((value) async {
+                                    print("3");
+                                    SharedPreferences pref =
+                                        await SharedPreferences.getInstance();
+                                    int count = pref.getInt('count')!;
+                                    FirebaseFirestore.instance
+                                        .collection('users')
+                                        .doc(FirebaseAuth
+                                            .instance.currentUser!.uid)
+                                        .update(
+                                            {'registrationCount': count + 1});
 
-                                  Navigator.pop(context);
-                                  Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => HomeScreen()),
-                                      (route) => false);
+                                    Navigator.pop(context);
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => HomeScreen()),
+                                        (route) => false);
+                                  });
                                 });
                               });
-                            });
-                            // } else {
-                            //   const snackBar = SnackBar(
-                            //     content: Text('Add screenshot of the payment'),
-                            //   );
+                            } else {
+                              const snackBar = SnackBar(
+                                content: Text('Add screenshot of the payment'),
+                              );
 
-                            //   ScaffoldMessenger.of(context)
-                            //       .showSnackBar(snackBar);
-                            // }
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            }
                           },
                           child: Center(
                             child: Text(

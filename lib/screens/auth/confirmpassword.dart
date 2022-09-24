@@ -251,7 +251,7 @@ class _ConfirmPasswordModuleState extends State<ConfirmPasswordModule> {
                             Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SplashScreen()),
+                                    builder: (context) => HomeScreen()),
                                 (route) => false);
                           }).catchError((onError) {
                             print(onError.code);

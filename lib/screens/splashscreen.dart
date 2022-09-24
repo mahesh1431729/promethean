@@ -9,6 +9,7 @@ import 'package:promethean/screens/organizer/eventscreen.dart';
 import 'package:promethean/screens/user/eventregistration.dart';
 import 'package:promethean/screens/user/homescreen.dart';
 import 'package:promethean/utils/unitls.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -23,21 +24,35 @@ class _SplashScreenState extends State<SplashScreen> {
     // TODO: implement initState
     super.initState();
     Timer(Duration(milliseconds: 300), () async {
+      // Navigator.pushAndRemoveUntil(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => FirebaseAuth.instance.currentUser != null
+      //           ? SignUpScreen()
+      //           : HomeScreen(),
+      //     ),
+      //     (route) => false);
       if (FirebaseAuth.instance.currentUser != null) {
-        bool val = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
-            .snapshots()
-            .contains('organizer ');
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    val ? OrganizerEventScreen() : const HomeScreen(),
-              ),
-              (route) => false);
-        });
+        // bool val = await FirebaseFirestore.instance
+        //     .collection('users')
+        //     .doc(FirebaseAuth.instance.currentUser!.uid)
+        //     .snapshots()
+        //     .contains('organizer ');
+        bool val = false;
+
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+
+        val = sharedPreferences.getBool('organizer') ==null? false : sharedPreferences.getBool('organizer')!;
+        print(val);
+
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  val ? OrganizerEventScreen() : const HomeScreen(),
+            ),
+            (route) => false);
       } else {
         Navigator.pushAndRemoveUntil(
             context,

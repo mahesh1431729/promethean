@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:promethean/screens/auth/forgotpassword.dart';
 import 'package:promethean/screens/auth/signup.dart';
+import 'package:promethean/screens/organizer/eventscreen.dart';
 import 'package:promethean/screens/splashscreen.dart';
 import 'package:promethean/screens/user/eventregistration.dart';
 import 'package:promethean/screens/user/homescreen.dart';
@@ -205,180 +207,256 @@ class _LoginModuleState extends State<LoginModule> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: MaterialButton(
-                      onPressed: (() {
+                      onPressed: (() async {
                         if (key.currentState!.validate()) {
                           showDialog(
                               context: context,
-                              builder: (contex) {
+                              builder: (context) {
                                 return Center(
                                   child: CircularProgressIndicator(
                                       color: AppColors.backGoundColor),
                                 );
                               });
+                          bool user = false;
 
-                          try {
-                            FirebaseAuth.instance
-                                .signInWithEmailAndPassword(
-                                    email: email.text, password: password.text)
-                                .then((value) async {
-                              SharedPreferences shared_preferences =
+                          FirebaseAuth.instance
+                              .signInWithEmailAndPassword(
+                                  email: email.text, password: password.text)
+                              .then((value) async {
+                            if (FirebaseAuth.instance.currentUser != null) {
+                              FirebaseFirestore.instance
+                                  .collection('users')
+                                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                                  .get()
+                                  .then((value) async {
+
+
+                                if (value.get('organizer ')) {
+                                  print("yes");
+                                  SharedPreferences sharedPreferences =
+                                      await SharedPreferences.getInstance();
+
+                                  sharedPreferences.setBool('organizer', true);
+                                }
+                              });
+                              SharedPreferences sharedPreferences =
                                   await SharedPreferences.getInstance();
-                              shared_preferences.setInt('count', 0);
+                              setState((){
+                                user = sharedPreferences.getBool('organizer')!;
+                              });
+
                               Navigator.pop(context);
                               Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const SplashScreen()),
+                                      builder: (context) => user
+                                          ? OrganizerEventScreen()
+                                          : HomeScreen()),
                                   (route) => false);
-                            });
-                          } catch (e) {
+                            }
+                          }).catchError((e) async {
                             if (e is PlatformException) {
-                              if (e.code == 'ERROR_WRONG_PASSWORD') {
+                              if (e.code == 'wrong-password') {
                                 Navigator.pop(context);
                                 showDialog(
                                     context: context,
                                     builder: (contex) {
-                                      return Center(
-                                          child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: Material(
-                                          child: Column(
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  'Wrong Password\n Retry...!',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: width * 0.04,
-                                                    fontFamily: "Urbanist",
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                // width: width * 0.,
-                                                height: 56,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                  color: Color(0xff1e232c),
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                    child: MaterialButton(
-                                                      onPressed: (() {
-                                                        Navigator.pop(context);
-                                                      }),
-                                                      child: Center(
-                                                        child: Text(
-                                                          "Ok",
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize:
-                                                                width * 0.04,
-                                                            fontFamily:
-                                                                "Urbanist",
-                                                            fontWeight:
-                                                                FontWeight.w600,
+                                      return Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          Container(
+                                            height: height * 0.3,
+                                            width: width * 0.8,
+                                            child: Center(
+                                                child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: Material(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Text(
+                                                        'Wrong Password\n Retry...!',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize:
+                                                              width * 0.04,
+                                                          fontFamily:
+                                                              "Urbanist",
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      width: width * 0.5,
+                                                      height: 56,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
+                                                        color:
+                                                            Color(0xff1e232c),
+                                                      ),
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8),
+                                                          child: MaterialButton(
+                                                            onPressed: (() {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            }),
+                                                            child: Center(
+                                                              child: Text(
+                                                                "Ok",
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize:
+                                                                      width *
+                                                                          0.04,
+                                                                  fontFamily:
+                                                                      "Urbanist",
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
+                                                              ),
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
+                                                  ],
                                                 ),
                                               ),
-                                            ],
+                                            )),
                                           ),
-                                        ),
-                                      ));
+                                        ],
+                                      );
                                     });
-                              } else if (e.code == 'ERROR_USER_NOT_FOUND') {
+                              } else if (e.code == 'user-not-found') {
                                 Navigator.pop(context);
                                 showDialog(
                                     context: context,
                                     builder: (contex) {
-                                      return Center(
-                                          child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: Material(
-                                          child: Column(
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  "User Doesn't exists\n Please create an account",
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: width * 0.04,
-                                                    fontFamily: "Urbanist",
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                // width: width * 0.,
-                                                height: 56,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                  color: Color(0xff1e232c),
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                    child: MaterialButton(
-                                                      onPressed: (() {
-                                                        Navigator.pushAndRemoveUntil(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        SignUpScreen()),
-                                                            (route) => false);
-                                                      }),
-                                                      child: Center(
-                                                        child: Text(
-                                                          "Register",
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize:
-                                                                width * 0.04,
-                                                            fontFamily:
-                                                                "Urbanist",
-                                                            fontWeight:
-                                                                FontWeight.w600,
+                                      return Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          Container(
+                                            height: height * 0.3,
+                                            width: width * 0.8,
+                                            child: Center(
+                                                child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: Material(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Text(
+                                                        "User Doesn't exists\n Please create an account",
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize:
+                                                              width * 0.04,
+                                                          fontFamily:
+                                                              "Urbanist",
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      width: width * 0.5,
+                                                      height: 56,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
+                                                        color:
+                                                            Color(0xff1e232c),
+                                                      ),
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8),
+                                                          child: MaterialButton(
+                                                            onPressed: (() {
+                                                              Navigator.pushAndRemoveUntil(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder:
+                                                                          (context) =>
+                                                                              SignUpScreen()),
+                                                                  (route) =>
+                                                                      false);
+                                                            }),
+                                                            child: Center(
+                                                              child: Text(
+                                                                "Register",
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize:
+                                                                      width *
+                                                                          0.04,
+                                                                  fontFamily:
+                                                                      "Urbanist",
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
+                                                              ),
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
+                                                  ],
                                                 ),
                                               ),
-                                            ],
+                                            )),
                                           ),
-                                        ),
-                                      ));
+                                        ],
+                                      );
                                     });
-                              } else if (e.code == 'ERROR_INVALID_EMAIL') {
+                              } else if (e.code == 'invalid-mail') {
                                 Navigator.pop(context);
                                 showDialog(
                                     context: context,
@@ -448,8 +526,23 @@ class _LoginModuleState extends State<LoginModule> {
                                       ));
                                     });
                               }
+                            } else {
+                              SharedPreferences sharedPreferences =
+                                  await SharedPreferences.getInstance();
+
+                              sharedPreferences.setBool('organizer', false);
+
+                              user = sharedPreferences.getBool('organizer')!;
+                              Navigator.pop(context);
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => user
+                                          ? OrganizerEventScreen()
+                                          : HomeScreen()),
+                                  (route) => false);
                             }
-                          }
+                          });
                         }
                       }),
                       child: Center(

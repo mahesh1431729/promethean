@@ -202,8 +202,8 @@ class _EventScreenState extends State<EventScreen> {
                             borderRadius: BorderRadius.circular(16),
                             child: Image.network(
                               snapshot.data!['eventImage'],
-                            // child: Image.asset(
-                            //   "assets/images/csm.png",
+                              // child: Image.asset(
+                              //   "assets/images/csm.png",
                               fit: BoxFit.contain,
                               width: width * 0.95,
                               height: height * 0.25,
@@ -250,7 +250,7 @@ class _EventScreenState extends State<EventScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   SizedBox(
-                                    width:width*0.6,
+                                    width: width * 0.6,
                                     child: Text(
                                       snapshot.data!['eventName'],
                                       style: TextStyle(
@@ -380,15 +380,22 @@ class _EventScreenState extends State<EventScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(
-                            width: width * 0.85,
-                            height: 160,
-                            child: Text(
-                              "Team details\nno of members\nfee details\nLorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem\nLorem Lorem Lorem LoremLorem Lorem Lorem Lorem\nLorem Lorem Lorem LoremLorem Lorem Lorem Lorem\nLorem Lorem Lorem LoremLorem Lorem Lorem Lorem\nLorem Lorem Lorem LoremLorem Lorem Lorem Lorem\nLorem Lorem Lorem LoremLorem Lorem Lorem Lorem\nLorem Lorem Lorem LoremLorem Lorem Lorem Lorem",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 13,
-                              ),
+                          Text(
+                            snapshot.data!.get('fixedRegistration')
+                                ? "${snapshot.data!.get('registrationSize')} participants compulsory"
+                                : "Upto ${snapshot.data!.get('registrationSize')} participants",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 13,
+                            ),
+                          ),
+                          Text(
+                            snapshot.data!.get('fixedRegistration')
+                                ? "Registration fee - ${snapshot.data!.get('registrationFee')} per team"
+                                : "Registration fee - ${snapshot.data!.get('registrationFee')} per head",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 13,
                             ),
                           ),
                           Align(
