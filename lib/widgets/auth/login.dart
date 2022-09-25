@@ -6,9 +6,9 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:promethean/screens/auth/forgotpassword.dart';
 import 'package:promethean/screens/auth/signup.dart';
+import 'package:promethean/screens/organizer/eventscreen.dart';
 import 'package:promethean/screens/splashscreen.dart';
-import 'package:promethean/screens/user/eventregistration.dart';
-import 'package:promethean/screens/user/homescreen.dart';
+import 'package:promethean/screens/organizer/eventregistration.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utils/unitls.dart';
@@ -224,17 +224,20 @@ class _LoginModuleState extends State<LoginModule> {
                               SharedPreferences shared_preferences =
                                   await SharedPreferences.getInstance();
                               shared_preferences.setInt('count', 0);
+                              SharedPreferences pref =
+                                  await SharedPreferences.getInstance();
+                              pref.setBool('mode', true);
                               Navigator.pop(context);
                               Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const SplashScreen()),
+                                          OrganizerEventScreen()),
                                   (route) => false);
                             });
                           } catch (e) {
                             if (e is PlatformException) {
-                              if (e.code == 'ERROR_WRONG_PASSWORD') {
+                              if (e.code == 'wrong-password') {
                                 Navigator.pop(context);
                                 showDialog(
                                     context: context,
@@ -303,7 +306,7 @@ class _LoginModuleState extends State<LoginModule> {
                                         ),
                                       ));
                                     });
-                              } else if (e.code == 'ERROR_USER_NOT_FOUND') {
+                              } else if (e.code == 'user-not-found') {
                                 Navigator.pop(context);
                                 showDialog(
                                     context: context,
@@ -378,7 +381,7 @@ class _LoginModuleState extends State<LoginModule> {
                                         ),
                                       ));
                                     });
-                              } else if (e.code == 'ERROR_INVALID_EMAIL') {
+                              } else if (e.code == 'invalid-email') {
                                 Navigator.pop(context);
                                 showDialog(
                                     context: context,

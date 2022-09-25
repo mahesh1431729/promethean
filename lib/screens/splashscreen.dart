@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:promethean/screens/auth/login.dart';
 import 'package:promethean/screens/auth/signup.dart';
 import 'package:promethean/screens/organizer/eventscreen.dart';
-import 'package:promethean/screens/user/eventregistration.dart';
-import 'package:promethean/screens/user/homescreen.dart';
+import 'package:promethean/screens/organizer/eventregistration.dart';
 import 'package:promethean/utils/unitls.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -24,20 +24,15 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(Duration(milliseconds: 300), () async {
       if (FirebaseAuth.instance.currentUser != null) {
-        bool val = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
-            .snapshots()
-            .contains('organizer ');
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    val ? OrganizerEventScreen() : const HomeScreen(),
-              ),
-              (route) => false);
-        });
+        SharedPreferences pref = await SharedPreferences.getInstance();
+        bool val = pref.getBool('mode')!;
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  val ? OrganizerEventScreen() : EventRegistration(),
+            ),
+            (route) => false);
       } else {
         Navigator.pushAndRemoveUntil(
             context,

@@ -1,10 +1,13 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:promethean/screens/organizer/editevent.dart';
 import 'package:promethean/screens/organizer/registeredscreen.dart';
-import 'package:promethean/screens/user/faqscreen.dart';
-import 'package:promethean/screens/user/teamregistrationsreen.dart';
 
 import '../../utils/unitls.dart';
 
@@ -39,6 +42,7 @@ class _OrganizerEventScreenState extends State<OrganizerEventScreen> {
                               .doc(snapShot.data!.get('id'))
                               .snapshots(),
                           builder: (context, snapshot) {
+                            var images = [];
                             return !snapshot.hasData
                                 ? Center(
                                     child: CircularProgressIndicator(
@@ -93,126 +97,48 @@ class _OrganizerEventScreenState extends State<OrganizerEventScreen> {
                                                       ),
                                                     ),
                                                   ),
-                                                  // GestureDetector(
-                                                  //   onTap: (() {
-                                                  //     showDialog(
-                                                  //         context: context,
-                                                  //         builder: ((context) {
-                                                  //           return Stack(
-                                                  //             children: [
-                                                  //               Positioned(
-                                                  //                 top: height * 0.07,
-                                                  //                 right: 50,
-                                                  //                 child: ClipRRect(
-                                                  //                   borderRadius:
-                                                  //                       BorderRadius.circular(
-                                                  //                           10),
-                                                  //                   child: Material(
-                                                  //                       child: Padding(
-                                                  //                     padding:
-                                                  //                         const EdgeInsets
-                                                  //                             .all(8.0),
-                                                  //                     child: Column(
-                                                  //                       children: [
-                                                  //                         Text(
-                                                  //                           "Announcements",
-                                                  //                           style: TextStyle(
-                                                  //                             color: Colors
-                                                  //                                 .black,
-                                                  //                             fontSize:
-                                                  //                                 width *
-                                                  //                                     0.06,
-                                                  //                             fontFamily:
-                                                  //                                 "Urbanist",
-                                                  //                             fontWeight:
-                                                  //                                 FontWeight
-                                                  //                                     .w700,
-                                                  //                           ),
-                                                  //                         ),
-                                                  //                         StreamBuilder<
-                                                  //                                 QuerySnapshot<
-                                                  //                                     Map<String,
-                                                  //                                         dynamic>>>(
-                                                  //                             stream: FirebaseFirestore
-                                                  //                                 .instance
-                                                  //                                 .collection(
-                                                  //                                     'events')
-                                                  //                                 .doc(widget
-                                                  //                                     .id)
-                                                  //                                 .collection(
-                                                  //                                     'announcements')
-                                                  //                                 .snapshots(),
-                                                  //                             builder: (context,
-                                                  //                                 snapshot) {
-                                                  //                               return Container(
-                                                  //                                 height:
-                                                  //                                     height *
-                                                  //                                         0.3,
-                                                  //                                 width:
-                                                  //                                     width *
-                                                  //                                         0.5,
-                                                  //                                 child: !snapshot
-                                                  //                                         .hasData
-                                                  //                                     ? Center(
-                                                  //                                         child:
-                                                  //                                             CircularProgressIndicator(color: Colors.black),
-                                                  //                                       )
-                                                  //                                     : snapshot.data!.docs.length ==
-                                                  //                                             0
-                                                  //                                         ? Center(
-                                                  //                                             child: Text(
-                                                  //                                               "No announcements so far",
-                                                  //                                               style: TextStyle(
-                                                  //                                                 color: Color(0x7f000000),
-                                                  //                                                 fontSize: 14,
-                                                  //                                                 fontWeight: FontWeight.bold,
-                                                  //                                               ),
-                                                  //                                             ),
-                                                  //                                           )
-                                                  //                                         : ListView.builder(
-                                                  //                                             itemCount: snapshot.data!.docs.length,
-                                                  //                                             itemBuilder: (context, index) {
-                                                  //                                               return Padding(
-                                                  //                                                 padding: const EdgeInsets.all(8.0),
-                                                  //                                                 child: SizedBox(
-                                                  //                                                   width: width * 0.5,
-                                                  //                                                   child: Column(
-                                                  //                                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                                  //                                                     children: [
-                                                  //                                                       Text(
-                                                  //                                                         snapshot.data!.docs[index]['title'],
-                                                  //                                                         style: TextStyle(
-                                                  //                                                           color: Color(0x7f000000),
-                                                  //                                                           fontSize: 14,
-                                                  //                                                           fontWeight: FontWeight.bold,
-                                                  //                                                         ),
-                                                  //                                                       ),
-                                                  //                                                       Text(
-                                                  //                                                         snapshot.data!.docs[index]['description'],
-                                                  //                                                         style: TextStyle(
-                                                  //                                                           color: Color(0x7f000000),
-                                                  //                                                           fontSize: 14,
-                                                  //                                                         ),
-                                                  //                                                       ),
-                                                  //                                                     ],
-                                                  //                                                   ),
-                                                  //                                                 ),
-                                                  //                                               );
-                                                  //                                             }),
-                                                  //                               );
-                                                  //                             }),
-                                                  //                       ],
-                                                  //                     ),
-                                                  //                   )),
-                                                  //                 ),
-                                                  //               ),
-                                                  //             ],
-                                                  //           );
-                                                  //         }));
-                                                  //   }),
-                                                  //   child: SvgPicture.asset(
-                                                  //       "assets/images/announcements.svg"),
-                                                  // ),
+                                                  GestureDetector(
+                                                      onTap: (() {
+                                                        Navigator.pushAndRemoveUntil(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (context) => EditEvent(
+                                                                    date: snapshot
+                                                                        .data!
+                                                                        .get(
+                                                                            'date'),
+                                                                    description: snapshot
+                                                                        .data!
+                                                                        .get(
+                                                                            'description'),
+                                                                    eventName: snapshot
+                                                                        .data!
+                                                                        .get(
+                                                                            'eventName'),
+                                                                    facultyContact:
+                                                                        snapshot
+                                                                            .data!
+                                                                            .get(
+                                                                                'facultyContact'),
+                                                                    facultyName:
+                                                                        snapshot
+                                                                            .data!
+                                                                            .get('facultyName'),
+                                                                    fixedReg: snapshot.data!.get('fixedRegistration'),
+                                                                    image: snapshot.data!.get('eventImage'),
+                                                                    registrationFee: snapshot.data!.get('registrationFee'),
+                                                                    registrationSize: snapshot.data!.get('registrationSize'),
+                                                                    studentContact: snapshot.data!.get('studentContact'),
+                                                                    studentName: snapshot.data!.get('studentName'),
+                                                                    time: snapshot.data!.get('time'),
+                                                                    upiId: snapshot.data!.get('UPIID'),
+                                                                    id: snapshot.data!.id)),
+                                                            (route) => true);
+                                                      }),
+                                                      child: Icon(
+                                                        Icons.edit,
+                                                        color: Colors.white,
+                                                      )),
                                                 ],
                                               ),
                                             ),
@@ -509,14 +435,73 @@ class _OrganizerEventScreenState extends State<OrganizerEventScreen> {
                                           alignment: Alignment.centerLeft,
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                              "Gallery",
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: width * 0.06,
-                                                fontFamily: "Urbanist",
-                                                fontWeight: FontWeight.w700,
-                                              ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  "Gallery",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: width * 0.06,
+                                                    fontFamily: "Urbanist",
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                    onPressed: () {
+                                                      String image;
+                                                      bool get = false;
+                                                      void
+                                                          _getFromGallery() async {
+                                                        XFile? pickedFile =
+                                                            await ImagePicker()
+                                                                .pickImage(
+                                                                    source: ImageSource
+                                                                        .gallery);
+                                                        var imageFile = File(
+                                                            pickedFile!.path);
+                                                        print(
+                                                            "adding file to DB");
+                                                        final ref =
+                                                            FirebaseStorage
+                                                                .instance
+                                                                .ref()
+                                                                .child(
+                                                                    "userImages")
+                                                                .child(DateTime
+                                                                        .now()
+                                                                    .toString());
+                                                        await ref
+                                                            .putFile(imageFile);
+                                                        String imageUrl =
+                                                            await ref
+                                                                .getDownloadURL();
+
+                                                        setState(() {
+                                                          image = imageUrl;
+                                                          get = true;
+                                                        });
+
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                'events')
+                                                            .doc(snapshot
+                                                                .data!.id)
+                                                            .update({
+                                                          'gallery': images
+                                                        });
+                                                      }
+
+                                                      _getFromGallery();
+                                                    },
+                                                    icon: Icon(
+                                                      Icons.add_circle,
+                                                      color: Colors.white,
+                                                    ))
+                                              ],
                                             ),
                                           ),
                                         ),
@@ -528,6 +513,8 @@ class _OrganizerEventScreenState extends State<OrganizerEventScreen> {
                                                 .data!['gallery'].length,
                                             scrollDirection: Axis.horizontal,
                                             itemBuilder: (context, index) {
+                                              images.add(snapshot
+                                                  .data!['gallery'][index]);
                                               return Padding(
                                                 padding:
                                                     const EdgeInsets.all(8.0),
@@ -575,15 +562,15 @@ class _OrganizerEventScreenState extends State<OrganizerEventScreen> {
                                                 BorderRadius.circular(8),
                                             child: MaterialButton(
                                               onPressed: () {
-                                                Navigator.pushAndRemoveUntil(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          FAQscreen(
-                                                        id: snapshot.data!.id,
-                                                      ),
-                                                    ),
-                                                    (route) => true);
+                                                // Navigator.pushAndRemoveUntil(
+                                                //     context,
+                                                //     MaterialPageRoute(
+                                                //       builder: (context) =>
+                                                //           FAQscreen(
+                                                //         id: snapshot.data!.id,
+                                                //       ),
+                                                //     ),
+                                                //     (route) => true);
                                               },
                                               child: Center(
                                                 child: Text(

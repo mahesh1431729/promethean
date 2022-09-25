@@ -4,8 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:promethean/screens/organizer/eventscreen.dart';
 import 'package:promethean/utils/unitls.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EventRegistration extends StatefulWidget {
   const EventRegistration({super.key});
@@ -90,7 +92,7 @@ class _EventRegistrationState extends State<EventRegistration> {
           padding: EdgeInsets.all(10),
           child: Column(
             children: [
-              SizedBox(height: height * 0.05),
+              SizedBox(height: height * 0.1),
               Align(
                 alignment: FractionalOffset.center,
                 child: Text(
@@ -826,6 +828,9 @@ class _EventRegistrationState extends State<EventRegistration> {
                             'gallery': [image],
                           }).then(
                             (value) async {
+                              SharedPreferences pref =
+                                  await SharedPreferences.getInstance();
+                              pref.setBool('mode', true);
                               FirebaseFirestore.instance
                                   .collection("users")
                                   .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -851,20 +856,12 @@ class _EventRegistrationState extends State<EventRegistration> {
                                   .collection('registrations');
 
                               Navigator.pop(context);
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      Material(
-                                        child: Text(
-                                            "Event Added\n please uninstall"),
-                                      )
-                                    ],
-                                  );
-                                },
-                              );
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          OrganizerEventScreen()),
+                                  (route) => false);
                             },
                           );
                         },

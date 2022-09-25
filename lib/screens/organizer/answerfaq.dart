@@ -1,18 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:promethean/screens/user/homescreen.dart';
 import '../../utils/unitls.dart';
 
 class AddFAQ extends StatefulWidget {
-  AddFAQ({super.key, required this.id});
+  AddFAQ(
+      {super.key,
+      required this.id,
+      required this.eventId,
+      required this.question});
   String id;
+  String eventId;
+  String question;
 
   @override
   State<AddFAQ> createState() => _AddFAQState();
 }
 
 class _AddFAQState extends State<AddFAQ> {
-  TextEditingController question = TextEditingController();
+  TextEditingController answer = TextEditingController();
   TextEditingController description = TextEditingController();
 
   @override
@@ -70,49 +75,7 @@ class _AddFAQState extends State<AddFAQ> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "New Question",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: width * 0.04,
-                        fontFamily: "Lato",
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: width * 0.9,
-                  // height: ,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: Colors.white,
-                      width: 1,
-                    ),
-                    color: Color(0x00c4c4c4),
-                  ),
-                  child: TextFormField(
-                    controller: question,
-                    style: TextStyle(color: Colors.white60),
-                    maxLines: 1,
-                    decoration: InputDecoration(
-                      hintText: "Write your question in few words",
-                      hintStyle: TextStyle(color: Colors.white60),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: height * 0.05,
-                ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "Explain question",
+                      "Answer",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: width * 0.04,
@@ -139,7 +102,7 @@ class _AddFAQState extends State<AddFAQ> {
                     minLines: 5,
                     maxLines: 10,
                     decoration: InputDecoration(
-                      hintText: "Explain your question",
+                      hintText: "Answer the Question",
                       hintStyle: TextStyle(color: Colors.white60),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -172,22 +135,18 @@ class _AddFAQState extends State<AddFAQ> {
                             FirebaseFirestore.instance
                                 .collection('events')
                                 .doc(widget.id)
-                                .collection('questions')
+                                .collection('faqs')
                                 .add({
-                              'questions': question.text,
-                              'description': description.text,
+                              'question': widget.question,
+                              'answer': answer.text,
                             }).then((value) {
                               Navigator.pop(context);
                               const snackBar = SnackBar(
-                                content: Text('Added you question'),
+                                content: Text('Added you answer'),
                               );
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(snackBar);
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => HomeScreen()),
-                                  (route) => false);
+                              Navigator.pop(context);
                             });
                           },
                           child: Center(

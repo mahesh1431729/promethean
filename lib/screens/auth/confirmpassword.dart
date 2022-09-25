@@ -5,11 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:promethean/screens/organizer/eventscreen.dart';
 import 'package:promethean/screens/splashscreen.dart';
-import 'package:promethean/screens/user/eventregistration.dart';
-import 'package:promethean/screens/user/homescreen.dart';
+import 'package:promethean/screens/organizer/eventregistration.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'login.dart';
 import '../../utils/unitls.dart';
 
@@ -240,18 +239,18 @@ class _ConfirmPasswordModuleState extends State<ConfirmPasswordModule> {
                                     "contact": widget.contact,
                                   }))
                               .then((value) async {
-                            SharedPreferences shared_preferences =
-                                await SharedPreferences.getInstance();
-                            shared_preferences.setInt('count', 0);
                             FirebaseFirestore.instance
                                 .collection('users')
                                 .doc(FirebaseAuth.instance.currentUser!.uid)
                                 .collection('registrations');
+                            SharedPreferences pref =
+                                await SharedPreferences.getInstance();
+                            pref.setBool('mode', false);
                             Navigator.pop(context);
                             Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SplashScreen()),
+                                    builder: (context) => EventRegistration()),
                                 (route) => false);
                           }).catchError((onError) {
                             print(onError.code);
