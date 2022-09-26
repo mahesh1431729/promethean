@@ -223,37 +223,14 @@ class _LoginModuleState extends State<LoginModule> {
                               .signInWithEmailAndPassword(
                                   email: email.text, password: password.text)
                               .then((value) async {
-                            if (FirebaseAuth.instance.currentUser != null) {
-                              FirebaseFirestore.instance
-                                  .collection('users')
-                                  .doc(FirebaseAuth.instance.currentUser!.uid)
-                                  .get()
-                                  .then((value) async {
-
-
-                                if (value.get('organizer ')) {
-                                  print("yes");
-                                  SharedPreferences sharedPreferences =
-                                      await SharedPreferences.getInstance();
-
-                                  sharedPreferences.setBool('organizer', true);
-                                }
-                              });
-                              SharedPreferences sharedPreferences =
-                                  await SharedPreferences.getInstance();
-                              setState((){
-                                user = sharedPreferences.getBool('organizer')!;
-                              });
-
-                              Navigator.pop(context);
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => user
-                                          ? OrganizerEventScreen()
-                                          : HomeScreen()),
-                                  (route) => false);
-                            }
+                            Navigator.pop(context);
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => user
+                                        ? OrganizerEventScreen()
+                                        : HomeScreen()),
+                                (route) => false);
                           }).catchError((e) async {
                             if (e is PlatformException) {
                               if (e.code == 'wrong-password') {
@@ -525,22 +502,16 @@ class _LoginModuleState extends State<LoginModule> {
                                         ),
                                       ));
                                     });
+                              } else {
+                                Navigator.pop(context);
                               }
                             } else {
-                              SharedPreferences sharedPreferences =
-                                  await SharedPreferences.getInstance();
-
-                              sharedPreferences.setBool('organizer', false);
-
-                              user = sharedPreferences.getBool('organizer')!;
                               Navigator.pop(context);
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => user
-                                          ? OrganizerEventScreen()
-                                          : HomeScreen()),
-                                  (route) => false);
+                              // Navigator.pushAndRemoveUntil(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) => HomeScreen()),
+                              //     (route) => false);
                             }
                           });
                         }
