@@ -4,11 +4,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:promethean/screens/auth/login.dart';
+import 'package:promethean/screens/user/developers.dart';
 import 'package:promethean/screens/user/registeredscreen.dart';
+import 'package:promethean/screens/user/sponsors.dart';
 import 'package:promethean/utils/unitls.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+
+import 'aboutus.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -357,54 +361,148 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       Positioned(
-                        bottom: 10,
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          width: width * 0.85,
-                          height: 56,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: Color(0xff1e232c),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: MaterialButton(
-                              onPressed: (() {
-                                showDialog(
-                                    context: context,
-                                    builder: (contex) {
-                                      return Center(
-                                        child: CircularProgressIndicator(
-                                            color: AppColors.backGoundColor),
-                                      );
-                                    });
-                                FirebaseAuth.instance.signOut().then(
-                                  (value) {
-                                    Navigator.pop(context);
-                                    Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: ((context) =>
-                                                LoginScreen())),
-                                        (route) => false);
-                                  },
-                                );
-                              }),
-                              child: Center(
-                                child: Text(
-                                  "Sign Out",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: width * 0.04,
-                                    fontFamily: "Lato",
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                          bottom: 10,
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Container(
+                                        padding: EdgeInsets.all(10),
+                                        width: width * 0.42,
+                                        height: 56,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                          BorderRadius.circular(8),
+                                          color: Color(0xff1e232c),
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                          BorderRadius.circular(8),
+                                          child: MaterialButton(
+                                            onPressed: (() {
+                                              Navigator.pushAndRemoveUntil(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          Developers()),
+                                                      (route) => true);
+                                            }),
+                                            child: Center(
+                                              child: Text(
+                                                "Developers",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: width * 0.04,
+                                                  fontFamily: "Lato",
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Container(
+                                        padding: EdgeInsets.all(10),
+                                        width: width * 0.42,
+                                        height: 56,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          color: Color(0xff1e232c),
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: MaterialButton(
+                                            onPressed: (() {
+                                              Navigator.pushAndRemoveUntil(
+                                              context,
+                                              MaterialPageRoute(
+                                              builder: (context) =>
+                                              Sponsors()),
+                                              (route) => true);
+                                            }),
+                                            child: Center(
+                                              child: Text(
+                                                "Sponsors",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: width * 0.04,
+                                                  fontFamily: "Lato",
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ),
-                          ),
-                        ),
-                      ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  width: width * 0.85,
+                                  height: 56,
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.circular(8),
+                                    color: Color(0xff1e232c),
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius:
+                                        BorderRadius.circular(8),
+                                    child: MaterialButton(
+                                      onPressed: (() {
+                                        showDialog(
+                                            context: context,
+                                            builder: (contex) {
+                                              return Center(
+                                                child: CircularProgressIndicator(
+                                                    color: AppColors
+                                                        .backGoundColor),
+                                              );
+                                            });
+                                        FirebaseAuth.instance
+                                            .signOut()
+                                            .then(
+                                          (value) {
+                                            Navigator.pop(context);
+                                            Navigator.pushAndRemoveUntil(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: ((context) =>
+                                                        LoginScreen())),
+                                                (route) => false);
+                                          },
+                                        );
+                                      }),
+                                      child: Center(
+                                        child: Text(
+                                          "Sign Out",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: width * 0.04,
+                                            fontFamily: "Lato",
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          )),
                       Positioned(
                         top: height * 0.07,
                         child: Container(

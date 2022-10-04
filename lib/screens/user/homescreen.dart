@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:promethean/utils/unitls.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'announcements.dart';
 import 'home.dart';
 import 'registeredscreen.dart';
@@ -35,9 +36,32 @@ class _HomeScreenState extends State<HomeScreen> {
                 ? Announcements()
                 : currentIndex == 2
                     ? Profile()
-                    : SfPdfViewer.asset(
-                        'assets/transportation.pdf',
-                        key: _pdfViewerKey,
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: height * 0.3,
+                            width: width * 0.8,
+                            child: WebView(
+                              initialUrl: Uri.dataFromString(
+                                '<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15201.497070129883!2d78.25749487292188!3d17.726995820452697!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xc4ae2d2cf9b35b63!2sB%20V%20Raju%20Institute%20of%20Technology!5e0!3m2!1sen!2sin!4v1664869233236!5m2!1sen!2sin" style="border:0;" allowfullscreen="true" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+                                mimeType: 'text/html',
+                              ).toString(),
+                              javascriptMode: JavascriptMode.unrestricted,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            height: height * 0.5,
+                            width: width * 0.8,
+                            child: SfPdfViewer.asset(
+                              'assets/transportation.pdf',
+                              key: _pdfViewerKey,
+                            ),
+                          ),
+                        ],
                       ),
       ),
       bottomNavigationBar: ClipRRect(

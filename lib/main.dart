@@ -6,11 +6,13 @@ import 'package:promethean/screens/organizer/regirationview.dart';
 import 'package:promethean/screens/splashscreen.dart';
 import 'package:promethean/screens/user/homescreen.dart';
 import 'screens/organizer/registeredscreen.dart';
+import 'screens/user/aboutus.dart';
 import 'screens/user/addfaqscreen.dart';
 import 'screens/user/eventregistration.dart';
 import 'screens/user/regirationview.dart';
 import 'screens/user/registeredscreen.dart';
 import 'screens/user/searchscreen.dart';
+import 'screens/user/sponsors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -51,6 +51,7 @@ dependencies:
   qr_svg_generator:
   qr:
   syncfusion_flutter_pdfviewer:
+  webview_flutter:
 
 dev_dependencies:
   flutter_test:

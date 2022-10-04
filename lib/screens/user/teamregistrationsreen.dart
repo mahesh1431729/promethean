@@ -7,6 +7,7 @@ class TeamRegistrationScreen extends StatefulWidget {
   TeamRegistrationScreen(
       {super.key,
       required this.maxcount,
+      required this.type,
       required this.id,
       required this.upiID,
       required this.cost,
@@ -18,6 +19,7 @@ class TeamRegistrationScreen extends StatefulWidget {
   int cost;
   int count;
   String name;
+  bool type;
 
   @override
   State<TeamRegistrationScreen> createState() => _TeamRegistrationScreenState();
@@ -492,8 +494,10 @@ class _TeamRegistrationScreenState extends State<TeamRegistrationScreen> {
                                 var upiDetails = UPIDetails(
                                   upiID: widget.upiID,
                                   payeeName: widget.name,
-                                  amount: double.parse(
-                                      "${widget.cost * itemCount}"),
+                                  amount: widget.type
+                                      ? double.parse("${widget.cost}")
+                                      : double.parse(
+                                          "${widget.cost * itemCount}"),
                                 );
                                 Navigator.pushAndRemoveUntil(
                                     context,
@@ -505,8 +509,9 @@ class _TeamRegistrationScreenState extends State<TeamRegistrationScreen> {
                                                   upiDetails: upiDetails,
                                                   size: 200),
                                               details: details,
-                                              amount:
-                                                  "${widget.cost * itemCount}",
+                                              amount: widget.type
+                                                  ? "${widget.cost}"
+                                                  : "${widget.cost * itemCount}",
                                             )),
                                     (route) => true);
                               } else {

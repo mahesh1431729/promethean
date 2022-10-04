@@ -277,6 +277,8 @@ class _EventScreenState extends State<EventScreen> {
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     TeamRegistrationScreen(
+                                                  type: snapshot.data![
+                                                      'fixedRegistration'],
                                                   name: snapshot
                                                       .data!['eventName'],
                                                   count: snapshot.data![
