@@ -2,22 +2,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../../utils/unitls.dart';
 
-class AnswerFAQs extends StatefulWidget {
-  AnswerFAQs(
-      {super.key,
-      required this.id,
-      required this.eventId,
-      required this.question});
-  String id;
+class AddAnnouncement extends StatefulWidget {
+  AddAnnouncement({
+    super.key,
+    required this.eventId,
+    required this.image,
+    required this.name,
+  });
   String eventId;
-  String question;
+  String image;
+  String name;
 
   @override
-  State<AnswerFAQs> createState() => _AnswerFAQsState();
+  State<AddAnnouncement> createState() => _AddAnnouncementState();
 }
 
-class _AnswerFAQsState extends State<AnswerFAQs> {
-  TextEditingController answer = TextEditingController();
+class _AddAnnouncementState extends State<AddAnnouncement> {
+  TextEditingController title = TextEditingController();
   TextEditingController description = TextEditingController();
 
   @override
@@ -58,7 +59,7 @@ class _AnswerFAQsState extends State<AnswerFAQs> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "FAQ",
+                  "Add Announcements",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Color(0xfffefefe),
@@ -75,7 +76,46 @@ class _AnswerFAQsState extends State<AnswerFAQs> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "Answer",
+                      "Title",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: width * 0.04,
+                        fontFamily: "Lato",
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  width: width * 0.9,
+                  // height: ,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: Colors.white,
+                      width: 1,
+                    ),
+                    color: Color(0x00c4c4c4),
+                  ),
+                  child: TextFormField(
+                    controller: title,
+                    style: TextStyle(color: Colors.white60),
+                    minLines: 1,
+                    decoration: InputDecoration(
+                      hintText: "Title",
+                      hintStyle: TextStyle(color: Colors.white60),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Description",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: width * 0.04,
@@ -102,7 +142,7 @@ class _AnswerFAQsState extends State<AnswerFAQs> {
                     minLines: 5,
                     maxLines: 10,
                     decoration: InputDecoration(
-                      hintText: "Answer the Question",
+                      hintText: "Announcement description",
                       hintStyle: TextStyle(color: Colors.white60),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -135,18 +175,31 @@ class _AnswerFAQsState extends State<AnswerFAQs> {
                             FirebaseFirestore.instance
                                 .collection('events')
                                 .doc(widget.eventId)
-                                .collection('faqs')
+                                .collection('announcements')
                                 .add({
-                              'question': widget.question,
-                              'answer': answer.text,
+                              'title': title.text,
+                              'description': description.text,
+                              'eventImage': widget.image,
+                              "eventName": widget.name,
+                              "id": widget.eventId,
                             }).then((value) {
-                              Navigator.pop(context);
-                              const snackBar = SnackBar(
-                                content: Text('Added you answer'),
-                              );
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
-                              Navigator.pop(context);
+                              FirebaseFirestore.instance
+                                  .collection('announcements')
+                                  .add({
+                                'title': title.text,
+                                'description': description.text,
+                                'eventImage': widget.image,
+                                "eventName": widget.name,
+                                "id": widget.eventId,
+                              }).then((value) {
+                                Navigator.pop(context);
+                                const snackBar = SnackBar(
+                                  content: Text('Announced'),
+                                );
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                                Navigator.pop(context);
+                              });
                             });
                           },
                           child: Center(

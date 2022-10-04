@@ -10,6 +10,8 @@ import 'package:promethean/screens/organizer/editevent.dart';
 import 'package:promethean/screens/organizer/registeredscreen.dart';
 
 import '../../utils/unitls.dart';
+import 'announcements.dart';
+import 'faqscreen.dart';
 
 class OrganizerEventScreen extends StatefulWidget {
   OrganizerEventScreen({super.key});
@@ -43,6 +45,9 @@ class _OrganizerEventScreenState extends State<OrganizerEventScreen> {
                               .snapshots(),
                           builder: (context, snapshot) {
                             var images = [];
+                            if (snapshot.hasData) {
+                              images = snapshot.data!.get("gallery");
+                            }
                             return !snapshot.hasData
                                 ? Center(
                                     child: CircularProgressIndicator(
@@ -55,92 +60,52 @@ class _OrganizerEventScreenState extends State<OrganizerEventScreen> {
                                       children: [
                                         Align(
                                           alignment: Alignment.centerRight,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: SizedBox(
-                                              // height: height * 0.05,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            10.0),
-                                                    child: FloatingActionButton(
-                                                      mini: true,
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      backgroundColor:
-                                                          AppColors.focusColor,
-                                                      isExtended: true,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(12),
-                                                      ),
-                                                      child: Center(
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 8.0),
-                                                          child: Icon(
-                                                            Icons
-                                                                .arrow_back_ios,
-                                                            color: Colors.black,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  GestureDetector(
-                                                      onTap: (() {
-                                                        Navigator.pushAndRemoveUntil(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (context) => EditEvent(
-                                                                    date: snapshot
+                                          child: Align(
+                                            alignment: Alignment.centerRight,
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: GestureDetector(
+                                                  onTap: (() {
+                                                    Navigator.pushAndRemoveUntil(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) => EditEvent(
+                                                                date: snapshot
+                                                                    .data!
+                                                                    .get(
+                                                                        'date'),
+                                                                description: snapshot
+                                                                    .data!
+                                                                    .get(
+                                                                        'description'),
+                                                                eventName: snapshot
+                                                                    .data!
+                                                                    .get(
+                                                                        'eventName'),
+                                                                facultyContact:
+                                                                    snapshot
                                                                         .data!
                                                                         .get(
-                                                                            'date'),
-                                                                    description: snapshot
+                                                                            'facultyContact'),
+                                                                facultyName:
+                                                                    snapshot
                                                                         .data!
-                                                                        .get(
-                                                                            'description'),
-                                                                    eventName: snapshot
-                                                                        .data!
-                                                                        .get(
-                                                                            'eventName'),
-                                                                    facultyContact:
-                                                                        snapshot
-                                                                            .data!
-                                                                            .get(
-                                                                                'facultyContact'),
-                                                                    facultyName:
-                                                                        snapshot
-                                                                            .data!
-                                                                            .get('facultyName'),
-                                                                    fixedReg: snapshot.data!.get('fixedRegistration'),
-                                                                    image: snapshot.data!.get('eventImage'),
-                                                                    registrationFee: snapshot.data!.get('registrationFee'),
-                                                                    registrationSize: snapshot.data!.get('registrationSize'),
-                                                                    studentContact: snapshot.data!.get('studentContact'),
-                                                                    studentName: snapshot.data!.get('studentName'),
-                                                                    time: snapshot.data!.get('time'),
-                                                                    upiId: snapshot.data!.get('UPIID'),
-                                                                    id: snapshot.data!.id)),
-                                                            (route) => true);
-                                                      }),
-                                                      child: Icon(
-                                                        Icons.edit,
-                                                        color: Colors.white,
-                                                      )),
-                                                ],
-                                              ),
+                                                                        .get('facultyName'),
+                                                                fixedReg: snapshot.data!.get('fixedRegistration'),
+                                                                image: snapshot.data!.get('eventImage'),
+                                                                registrationFee: "${snapshot.data!.get('registrationFee')}",
+                                                                registrationSize: "${snapshot.data!.get('registrationSize')}",
+                                                                studentContact: snapshot.data!.get('studentContact'),
+                                                                studentName: snapshot.data!.get('studentName'),
+                                                                time: snapshot.data!.get('time'),
+                                                                upiId: snapshot.data!.get('UPIID'),
+                                                                id: snapshot.data!.id)),
+                                                        (route) => true);
+                                                  }),
+                                                  child: Icon(
+                                                    Icons.edit,
+                                                    color: Colors.white,
+                                                  )),
                                             ),
                                           ),
                                         ),
@@ -163,8 +128,20 @@ class _OrganizerEventScreenState extends State<OrganizerEventScreen> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
+                                              SizedBox(
+                                                width: width * 0.6,
+                                                child: Text(
+                                                  snapshot.data!['branch'],
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: width * 0.035,
+                                                    fontFamily: "Urbanist",
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                              ),
                                               Text(
-                                                snapshot.data!['branch'],
+                                                "${snapshot.data!['registrationCount']}",
                                                 style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: width * 0.035,
@@ -172,15 +149,34 @@ class _OrganizerEventScreenState extends State<OrganizerEventScreen> {
                                                   fontWeight: FontWeight.w700,
                                                 ),
                                               ),
-                                              Text(
-                                                "${snapshot.data!['registrationCount']} Registered",
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: width * 0.035,
-                                                  fontFamily: "Urbanist",
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                              )
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Future.delayed(
+                                                        Duration.zero, () {
+                                                      Navigator.pushAndRemoveUntil(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  Particpants(
+                                                                      id: snapShot
+                                                                          .data!
+                                                                          .get(
+                                                                              'id'))),
+                                                          (route) => true);
+                                                    });
+                                                  },
+                                                  child: Text(
+                                                    "Registered",
+                                                    style: TextStyle(
+                                                      backgroundColor:
+                                                          Colors.white,
+                                                      color: Colors.black,
+                                                      fontSize: width * 0.035,
+                                                      fontFamily: "Urbanist",
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                    ),
+                                                  ))
                                             ],
                                           ),
                                         ),
@@ -206,8 +202,8 @@ class _OrganizerEventScreenState extends State<OrganizerEventScreen> {
                                                   ),
                                                 ),
                                                 Container(
-                                                  width: width * 0.3,
-                                                  height: 56,
+                                                  width: width * 0.35,
+                                                  // height: 56,
                                                   decoration: BoxDecoration(
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -220,22 +216,23 @@ class _OrganizerEventScreenState extends State<OrganizerEventScreen> {
                                                             8),
                                                     child: MaterialButton(
                                                       onPressed: () {
-                                                        Future.delayed(
-                                                            Duration.zero, () {
-                                                          Navigator.pushAndRemoveUntil(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder: (context) => Particpants(
-                                                                      id: snapShot
-                                                                          .data!
-                                                                          .get(
-                                                                              'id'))),
-                                                              (route) => true);
-                                                        });
+                                                        Navigator
+                                                            .pushAndRemoveUntil(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            AddAnnouncement(
+                                                                              eventId: snapshot.data!.id,
+                                                                              image: snapshot.data!.get('eventImage'),
+                                                                              name: snapshot.data!.get('eventName'),
+                                                                            )),
+                                                                (route) =>
+                                                                    true);
                                                       },
                                                       child: Center(
                                                         child: Text(
-                                                          "Participants",
+                                                          "Add\nAnnouncements",
                                                           textAlign:
                                                               TextAlign.center,
                                                           style: TextStyle(
@@ -326,15 +323,24 @@ class _OrganizerEventScreenState extends State<OrganizerEventScreen> {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(
-                                          width: width * 0.85,
-                                          height: 160,
-                                          child: Text(
-                                            "Team details\nno of members\nfee details\nLorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem\nLorem Lorem Lorem LoremLorem Lorem Lorem Lorem\nLorem Lorem Lorem LoremLorem Lorem Lorem Lorem\nLorem Lorem Lorem LoremLorem Lorem Lorem Lorem\nLorem Lorem Lorem LoremLorem Lorem Lorem Lorem\nLorem Lorem Lorem LoremLorem Lorem Lorem Lorem\nLorem Lorem Lorem LoremLorem Lorem Lorem Lorem",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 13,
-                                            ),
+                                        Text(
+                                          snapshot.data!
+                                                  .get('fixedRegistration')
+                                              ? "${snapshot.data!.get('registrationSize')} participants compulsory"
+                                              : "Upto ${snapshot.data!.get('registrationSize')} participants",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        Text(
+                                          snapshot.data!
+                                                  .get('fixedRegistration')
+                                              ? "Registration fee - ${snapshot.data!.get('registrationFee')} per team"
+                                              : "Registration fee - ${snapshot.data!.get('registrationFee')} per head",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 13,
                                           ),
                                         ),
                                         Align(
@@ -481,6 +487,7 @@ class _OrganizerEventScreenState extends State<OrganizerEventScreen> {
 
                                                         setState(() {
                                                           image = imageUrl;
+                                                          images.add(image);
                                                           get = true;
                                                         });
 
@@ -562,15 +569,15 @@ class _OrganizerEventScreenState extends State<OrganizerEventScreen> {
                                                 BorderRadius.circular(8),
                                             child: MaterialButton(
                                               onPressed: () {
-                                                // Navigator.pushAndRemoveUntil(
-                                                //     context,
-                                                //     MaterialPageRoute(
-                                                //       builder: (context) =>
-                                                //           FAQscreen(
-                                                //         id: snapshot.data!.id,
-                                                //       ),
-                                                //     ),
-                                                //     (route) => true);
+                                                Navigator.pushAndRemoveUntil(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          FAQscreen(
+                                                        id: snapshot.data!.id,
+                                                      ),
+                                                    ),
+                                                    (route) => true);
                                               },
                                               child: Center(
                                                 child: Text(

@@ -13,8 +13,6 @@ class FAQscreen extends StatefulWidget {
 }
 
 class _FAQscreenState extends State<FAQscreen> {
-  String buttonState = "view all";
-  List faqOpen = [];
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -91,7 +89,7 @@ class _FAQscreenState extends State<FAQscreen> {
                                           width: width * 0.85,
                                           child: Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                                MainAxisAlignment.start,
                                             children: [
                                               Text(
                                                 "Top Questions",
@@ -102,37 +100,6 @@ class _FAQscreenState extends State<FAQscreen> {
                                                   fontWeight: FontWeight.w600,
                                                 ),
                                               ),
-                                              TextButton(
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      for (int i = 0;
-                                                          i < faqOpen.length;
-                                                          i++) {
-                                                        faqOpen[i] =
-                                                            buttonState ==
-                                                                    "close all"
-                                                                ? false
-                                                                : true;
-                                                      }
-                                                      buttonState =
-                                                          buttonState ==
-                                                                  "close all"
-                                                              ? "view all"
-                                                              : "close all";
-                                                    });
-                                                  },
-                                                  child: Text(
-                                                    buttonState,
-                                                    textAlign: TextAlign.right,
-                                                    style: TextStyle(
-                                                      color: Color(0xff6373f7),
-                                                      fontSize: 14,
-                                                      fontFamily:
-                                                          "Eudoxus Sans",
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                    ),
-                                                  ))
                                             ],
                                           ),
                                         ),
@@ -144,7 +111,7 @@ class _FAQscreenState extends State<FAQscreen> {
                                       Navigator.pushAndRemoveUntil(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => AddFAQ(
+                                              builder: (context) => AnswerFAQs(
                                                     eventId: widget.id,
                                                     question: snapshot
                                                         .data!.docs[index - 1]
@@ -156,13 +123,11 @@ class _FAQscreenState extends State<FAQscreen> {
                                     },
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(
-                                          horizontal: width * 0.1,
+                                          // horizontal: width * 0.1,
                                           vertical: 10),
                                       child: AnimatedContainer(
                                         duration: Duration(milliseconds: 500),
-                                        height: faqOpen[index - 1]
-                                            ? height * 0.15
-                                            : height * 0.06,
+                                        height: height * 0.15,
                                         width: width * 0.8,
                                         decoration: BoxDecoration(
                                             borderRadius:
@@ -194,22 +159,6 @@ class _FAQscreenState extends State<FAQscreen> {
                                                           FontWeight.w600,
                                                     ),
                                                   ),
-                                                  IconButton(
-                                                      onPressed: () {
-                                                        setState(() {
-                                                          faqOpen[index - 1] =
-                                                              !faqOpen[
-                                                                  index - 1];
-                                                        });
-                                                      },
-                                                      icon: Icon(
-                                                        faqOpen[index - 1]
-                                                            ? Icons
-                                                                .minimize_outlined
-                                                            : Icons.add,
-                                                        color:
-                                                            Color(0xff6373F7),
-                                                      ))
                                                 ],
                                               ),
                                             ),

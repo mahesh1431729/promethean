@@ -46,6 +46,7 @@ class EditEvent extends StatefulWidget {
 }
 
 class _EditEventState extends State<EditEvent> {
+
   bool fixedReg = false;
 
   bool get = false;
@@ -95,6 +96,30 @@ class _EditEventState extends State<EditEvent> {
 
   String image =
       'https://firebasestorage.googleapis.com/v0/b/promethean-bvrit.appspot.com/o/userImages%2Frectangle.png?alt=media&token=a6e66c96-dc05-42db-8dae-1d369827a8ea';
+
+  @override
+  void initState(){
+    setup();
+    super.initState();
+  }
+
+  void setup(){
+    setState(() {
+      dateInput.text = widget.date;
+      timeInput.text = widget.time;
+      eventName.text = widget.eventName;
+      description.text = widget.description;
+      registrationFee.text = widget.registrationFee;
+      registrationSize.text = widget.registrationSize;
+      facultyName.text = widget.facultyName;
+      facultyNumber.text = widget.facultyContact;
+      studentName.text = widget.studentName;
+      studentNumber.text = widget.studentContact;
+      upiID.text = widget.upiId;
+    });
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +213,6 @@ class _EditEventState extends State<EditEvent> {
                           ),
                           child: TextFormField(
                             // initialValue: snapshot.data!.get('eventName'),
-                            initialValue: widget.eventName,
                             controller: eventName,
                             style: TextStyle(
                               color: Colors.white,
@@ -226,7 +250,6 @@ class _EditEventState extends State<EditEvent> {
                           ),
                           child: TextFormField(
                             // initialValue: snapshot.data!.get('description'),
-                            initialValue: widget.description,
                             controller: description,
                             style: TextStyle(color: Colors.white60),
                             minLines: 1,
@@ -364,7 +387,6 @@ class _EditEventState extends State<EditEvent> {
                               color: Color(0x00c4c4c4),
                             ),
                             child: TextFormField(
-                              initialValue: widget.registrationFee,
                               // initialValue:
                               //     snapshot.data!.get('registrationFee'),
                               keyboardType: TextInputType.number,
@@ -405,7 +427,6 @@ class _EditEventState extends State<EditEvent> {
                           child: TextFormField(
                             // initialValue:
                             //     snapshot.data!.get('registrationSize'),
-                            initialValue: widget.registrationFee,
 
                             keyboardType: TextInputType.number,
                             controller: registrationSize,
@@ -467,7 +488,6 @@ class _EditEventState extends State<EditEvent> {
                               color: Color(0x00c4c4c4),
                             ),
                             child: TextFormField(
-                              initialValue: widget.facultyName,
 
                               controller: facultyName,
                               style: TextStyle(
@@ -506,7 +526,6 @@ class _EditEventState extends State<EditEvent> {
                           ),
                           child: TextFormField(
                             // initialValue: snapshot.data!.get('facultyContact'),
-                            initialValue: widget.facultyContact,
 
                             controller: facultyNumber,
                             style: TextStyle(
@@ -555,7 +574,6 @@ class _EditEventState extends State<EditEvent> {
                             ),
                             child: TextFormField(
                               // initialValue: snapshot.data!.get('studentName'),
-                              initialValue: widget.studentName,
 
                               controller: studentName,
 
@@ -594,7 +612,6 @@ class _EditEventState extends State<EditEvent> {
                             color: Color(0x00c4c4c4),
                           ),
                           child: TextFormField(
-                            initialValue: widget.studentContact,
 
                             // initialValue: snapshot.data!.get('studentContact'),
                             controller: studentNumber,
@@ -634,7 +651,6 @@ class _EditEventState extends State<EditEvent> {
                             color: Color(0x00c4c4c4),
                           ),
                           child: TextFormField(
-                            initialValue: widget.upiId,
 
                             // initialValue: snapshot.data!.get('UPIID'),
                             controller: upiID,
@@ -679,7 +695,7 @@ class _EditEventState extends State<EditEvent> {
 
                         FirebaseFirestore.instance
                             .collection("events")
-                            .doc()
+                            .doc(widget.id)
                             .update({
                           'eventName': eventName.text,
                           'description': description.text,

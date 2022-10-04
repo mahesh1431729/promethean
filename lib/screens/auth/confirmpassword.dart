@@ -5,10 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:promethean/screens/organizer/eventscreen.dart';
 import 'package:promethean/screens/splashscreen.dart';
-import 'package:promethean/screens/organizer/eventregistration.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../organizer/eventregistration.dart';
 import 'login.dart';
 import '../../utils/unitls.dart';
 
@@ -232,7 +232,7 @@ class _ConfirmPasswordModuleState extends State<ConfirmPasswordModule> {
                                       .set({
                                     'registrationCount': 0,
                                     "profileImage":
-                                        "https://firebasestorage.googleapis.com/v0/b/promethean-bvrit.appspot.com/o/userImages%2F2022-09-17%2011%3A29%3A19.483030?alt=media&token=1407e358-8e33-4f7c-b95d-3520d7070b44",
+                                        "https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
                                     "name": widget.userName,
                                     "email": widget.email,
                                     "collegeName": widget.collegeName,
