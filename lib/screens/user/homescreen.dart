@@ -43,8 +43,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: height * 0.3,
                             width: width * 0.8,
                             child: WebView(
+                              zoomEnabled: true,
                               initialUrl: Uri.dataFromString(
-                                '<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15201.497070129883!2d78.25749487292188!3d17.726995820452697!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xc4ae2d2cf9b35b63!2sB%20V%20Raju%20Institute%20of%20Technology!5e0!3m2!1sen!2sin!4v1664869233236!5m2!1sen!2sin" style="border:0;" allowfullscreen="true" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+                                '<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d60806.13409273768!2d78.252173!3d17.726566!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xc4ae2d2cf9b35b63!2sB%20V%20Raju%20Institute%20of%20Technology!5e0!3m2!1sen!2sin!4v1664877719350!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
                                 mimeType: 'text/html',
                               ).toString(),
                               javascriptMode: JavascriptMode.unrestricted,

@@ -115,7 +115,8 @@ class _HomeState extends State<Home> {
                                                                     .docs[
                                                                         index -
                                                                             1]
-                                                                    .id)),
+                                                                    .get(
+                                                                        'id'))),
                                                     (route) => true);
                                               }),
                                               child: Container(
